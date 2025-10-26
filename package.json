@@ -1,6 +1,6 @@
 {
   "name": "dagi_temp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A CLI tool for generating React projects with Redux Toolkit and React Query/Redux",
   "main": "index.js",
   "type": "module",  
