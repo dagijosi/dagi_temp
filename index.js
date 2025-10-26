@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import prompts from "prompts";
-import { copy, readFile, writeFile } from "fs-extra";
+import fsExtra from "fs-extra"; // <- changed import
 import { exec } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
+
+// Destructure methods from default import
+const { copy, readFile, writeFile } = fsExtra;
 
 // Fix for __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -34,7 +37,6 @@ async function main() {
   } catch (err) {
     console.error('Error modifying package.json', err);
   }
-
 
   // Edit index.html
   const indexHtmlPath = path.join(destinationPath, 'index.html');

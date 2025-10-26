@@ -1,18 +1,15 @@
 {
   "name": "dagi_temp",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A CLI tool for generating React projects with Redux Toolkit and React Query/Redux",
   "main": "index.js",
-  "type": "module",  
+  "type": "module",
   "bin": {
     "dagi_temp": "./index.js"
   },
   "dependencies": {
     "prompts": "^2.4.1",
-    "fs-extra": "^10.0.0",
-    "child_process": "latest",
-    "path": "latest",
-    "url": "latest"
+    "fs-extra": "^10.0.0"
   },
   "scripts": {
     "start": "node index.js"
