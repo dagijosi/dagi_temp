@@ -1,4 +1,77 @@
 
+import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+
+const features = [
+  {
+    name: 'Vite + React',
+    description: 'Enjoy a lightning-fast development experience with Vite and the power of React.',
+    icon: '⚡️',
+  },
+  {
+    name: 'Tailwind CSS',
+    description: 'A utility-first CSS framework for rapid UI development.',
+    icon: '🎨',
+  },
+  {
+    name: 'TypeScript',
+    description: 'Write safer, more maintainable code with static types.',
+    icon: '🔒',
+  },
+  {
+    name: 'State Management',
+    description: 'Includes Zustand and Redux Toolkit for flexible and scalable state management.',
+    icon: '🔄',
+  },
+  {
+    name: 'TanStack Query',
+    description: 'Powerful asynchronous state management for fetching, caching, and updating data.',
+    icon: '📈',
+  },
+  {
+    name: 'Framer Motion',
+    description: 'Create beautiful animations and interactions with ease.',
+    icon: '✨',
+  }
+];
+
+const FeaturesSection = () => (
+  <div id="features" className="bg-gray-900 py-24 sm:py-32">
+    <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-2xl lg:text-center">
+        <h2 className="text-base font-semibold leading-7 text-indigo-400">Template Features</h2>
+        <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Everything you need to start your project
+        </p>
+        <p className="mt-6 text-lg leading-8 text-gray-300">
+          This template comes with a set of modern tools and libraries to help you build your next big idea.
+        </p>
+      </div>
+      <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+        <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.name}
+              className="flex flex-col"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+                <span className="text-2xl">{feature.icon}</span>
+                {feature.name}
+              </dt>
+              <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
+                <p className="flex-auto">{feature.description}</p>
+              </dd>
+            </motion.div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </div>
+);
 
 const Homepage = () => {
   return (
@@ -25,14 +98,17 @@ const Homepage = () => {
                 </p>
                 <div className="mt-10 flex items-center gap-x-6">
                   <a
-                    href="#"
+                    href="#features"
                     className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-transform transform hover:scale-105"
                   >
                     Get started
                   </a>
-                  <a href="#" className="text-sm font-semibold leading-6 text-white">
-                    Live demo <span aria-hidden="true">→</span>
-                  </a>
+                  <button
+                    onClick={() => toast.success('This is a toast notification!')}
+                    className="rounded-md bg-green-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500 transition-transform transform hover:scale-105"
+                  >
+                    Show Toast
+                  </button>
                 </div>
               </div>
               <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
@@ -86,6 +162,7 @@ const Homepage = () => {
             </div>
           </div>
         </div>
+        <FeaturesSection />
       </main>
     </div>
   );
