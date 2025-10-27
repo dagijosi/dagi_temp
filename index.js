@@ -20,10 +20,19 @@ async function main() {
       name: "projectName",
       message: "What's your project name?",
       initial: "my-app"
+    },
+    {
+      type: "select",
+      name: "templateType",
+      message: "Choose a template type:",
+      choices: [
+        { title: "Landing Page", value: "r_q_z_template" },
+        { title: "Dashboard", value: "r_q_z_d_template" }
+      ]
     }
   ]);
 
-  const templatePath = path.join(__dirname, "r_q_z_template");
+  const templatePath = path.join(__dirname, response.templateType);
   const destinationPath = path.join(process.cwd(), response.projectName);
 
   await copy(templatePath, destinationPath);
@@ -32,7 +41,7 @@ async function main() {
   const pkgJsonPath = path.join(destinationPath, 'package.json');
   try {
     const pkgJson = await readFile(pkgJsonPath, 'utf-8');
-    const newPkgJson = pkgJson.replace(/"name": "r_q_z_template"/, `"name": "${response.projectName}"`);
+    const newPkgJson = pkgJson.replace(new RegExp(`"name": "${response.templateType}"`), `"name": "${response.projectName}"`);
     await writeFile(pkgJsonPath, newPkgJson, 'utf-8');
   } catch (err) {
     console.error('Error modifying package.json', err);
@@ -42,7 +51,7 @@ async function main() {
   const indexHtmlPath = path.join(destinationPath, 'index.html');
   try {
     const indexHtml = await readFile(indexHtmlPath, 'utf-8');
-    const newIndexHtml = indexHtml.replace(/<title>r_q_z_template<\/title>/, `<title>${response.projectName}</title>`);
+    const newIndexHtml = indexHtml.replace(new RegExp(`<title>${response.templateType}<\/title>`), `<title>${response.projectName}</title>`);
     await writeFile(indexHtmlPath, newIndexHtml, 'utf-8');
   } catch (err) {
     console.error('Error modifying index.html', err);

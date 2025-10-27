@@ -2,6 +2,7 @@ import React, { type JSX } from "react";
 
 export type RouteWrapper = (children: React.ReactNode) => JSX.Element;
 
+// routesTypes.ts
 export type RouteProps = {
   Component: React.ComponentType;
   layout?: React.ComponentType<{ children?: React.ReactNode }>; // 👈 make optional
@@ -11,6 +12,7 @@ export type RouteProps = {
   allowedRoles?: string[];
   meta?: Record<string, unknown>;
 };
+
 
 export type AppRoute = RouteProps & {
   path?: string;
