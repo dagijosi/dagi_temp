@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
-import Layout from "./routes/Layout"; // Root global layout (navbar, footer, etc.)
 import routes from "./routes/routes";
 import { renderRoutes } from "./routes/RouteRenderer";
+import Layout from "./layout/Layout";
 
 function App() {
   return (
