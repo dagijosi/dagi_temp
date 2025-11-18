@@ -1,9 +1,8 @@
 import React, { Suspense, type JSX, type ReactElement } from "react";
 import { Route } from "react-router-dom";
-import ProtectedRoute from "../components/ProtectedRoute";
 import RoleGuard from "./RoleGuard";
-import LoadingComponent from "../components/ui/LoadingComponent";
 import type { AppRoute } from "./types/routesTypes";
+import { LoadingComponent, ProtectedRoute } from "../components/ui";
 
 /**
  * Apply wrapper functions around a React element

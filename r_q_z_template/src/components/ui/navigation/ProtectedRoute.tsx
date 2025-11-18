@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-import { HOME, LOGIN } from "../routes/types/routeConstants";
-import { useAuthStore } from "../store/authStore";
+import { HOME, LOGIN } from "../../../routes/types/routeConstants";
+import { useAuthStore } from "../../../store/authStore";
 
 
 
