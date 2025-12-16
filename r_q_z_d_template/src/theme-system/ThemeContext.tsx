@@ -44,6 +44,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     root.style.setProperty('--color-icon', currentTheme.colors.icon);
     root.style.setProperty('--color-border', currentTheme.colors.border);
     root.style.setProperty('--color-surface', currentTheme.colors.surface);
+    
+    // Set optional colors with fallbacks
+    // Muted text: fallback to text color with 70% opacity if not defined
+    const mutedColor = currentTheme.colors.muted || currentTheme.colors.text + 'b3'; 
+    root.style.setProperty('--color-muted', mutedColor);
+
+    // Accent color: fallback to icon color if not defined
+    const accentColor = currentTheme.colors.accent || currentTheme.colors.icon;
+    root.style.setProperty('--color-accent', accentColor);
 
     // Handle Background Logic
     let bgSize = 'cover';

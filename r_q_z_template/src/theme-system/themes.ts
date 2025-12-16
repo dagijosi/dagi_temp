@@ -1,12 +1,15 @@
 export interface Theme {
   id: string;
   name: string;
+  description?: string; // Brief description of the theme
   type: 'solid' | 'gradient' | 'pattern';
   mode: 'light' | 'dark';
   colors: {
     background: string;
     text: string;
+    muted?: string; // Secondary/muted text color
     icon: string;
+    accent?: string; // Primary accent color (defaults to icon if not set)
     border: string;
     surface: string; // for cards/panels
   };
@@ -18,11 +21,13 @@ export const themes: Theme[] = [
   {
     id: 'cyan-breeze',
     name: 'Cyan Breeze',
+    description: 'A crisp and airy light theme with refreshing cyan accents.',
     type: 'solid',
     mode: 'light',
     colors: {
       background: '#f8fafc',
       text: '#0f172a',
+      muted: '#64748b',
       icon: '#06b6d4',
       border: '#e2e8f0',
       surface: '#ffffff',
@@ -31,11 +36,13 @@ export const themes: Theme[] = [
   {
     id: 'deep-ocean',
     name: 'Deep Ocean',
+    description: 'A dark, immersive theme inspired by the depths of the sea.',
     type: 'solid',
     mode: 'dark',
     colors: {
       background: '#0f172a',
       text: '#e2e8f0',
+      muted: '#94a3b8',
       icon: '#67e8f9',
       border: '#1e293b',
       surface: '#1e293b',
@@ -91,6 +98,38 @@ export const themes: Theme[] = [
       icon: '#a3a3a3',
       border: '#262626',
       surface: '#171717',
+    },
+  },
+  {
+    id: 'obsidian',
+    name: 'Obsidian',
+    description: 'A sharp, high-contrast dark theme with sophisticated gray tones.',
+    type: 'solid',
+    mode: 'dark',
+    colors: {
+      background: '#000000',
+      text: '#f8fafc',
+      muted: '#94a3b8',
+      icon: '#cbd5e1', // Light gray icon
+      accent: '#ffffff', // White accent for high contrast
+      border: '#334155',
+      surface: '#111111',
+    },
+  },
+  {
+    id: 'solar-flare',
+    name: 'Solar Flare',
+    description: 'A vibrant and energetic light theme with warm sunny hues.',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+      text: '#451a03',
+      muted: '#92400e',
+      icon: '#f59e0b',
+      accent: '#d97706',
+      border: '#fcd34d',
+      surface: 'rgba(255, 255, 255, 0.9)',
     },
   },
   {
@@ -236,7 +275,7 @@ export const themes: Theme[] = [
       background: '#020617', // slate-950
       text: '#e0f2fe', // sky-100
       icon: '#3b82f6', // blue-500
-            border: '#1e293b', // blue-700
+      border: '#1e293b', // blue-700
       surface: '#1e293b', // slate-800
     },
   },
@@ -349,277 +388,275 @@ export const themes: Theme[] = [
     backgroundSize: '20px 20px',
   },
   {
-  id: 'gradient-radial',
-  name: 'Gradient Radial',
-  type: 'gradient',
-  mode: 'light',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #6366f1 100%)',
-    text: '#0f172a',          // dark navy for contrast
-    icon: '#6366f1',          // indigo-500 accent
-    border: '#e2e8f0',        // slate-200
-    surface: 'rgba(255, 255, 255, 0.8)', // soft light panels
+    id: 'gradient-radial',
+    name: 'Gradient Radial',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #6366f1 100%)',
+      text: '#0f172a',          // dark navy for contrast
+      icon: '#6366f1',          // indigo-500 accent
+      border: '#e2e8f0',        // slate-200
+      surface: 'rgba(255, 255, 255, 0.8)', // soft light panels
+    },
   },
-},
-{
-  id: 'violet-glow',
-  name: 'Violet Glow',
-  type: 'gradient',
-  mode: 'light',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #7c3aed 100%)',
-    text: '#0f172a',           // dark slate text
-    icon: '#7c3aed',           // violet-600 accent
-    border: '#e2e8f0',         // light gray border
-    surface: 'rgba(255, 255, 255, 0.85)', // light glass panel
+  {
+    id: 'violet-glow',
+    name: 'Violet Glow',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #7c3aed 100%)',
+      text: '#0f172a',           // dark slate text
+      icon: '#7c3aed',           // violet-600 accent
+      border: '#e2e8f0',         // light gray border
+      surface: 'rgba(255, 255, 255, 0.85)', // light glass panel
+    },
   },
-},
-{
-  id: 'slate-glow',
-  name: 'Slate Glow',
-  type: 'gradient',
-  mode: 'light',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #475569 100%)',
-    text: '#0f172a',           // dark text for contrast
-    icon: '#475569',           // slate-600 accent
-    border: '#cbd5e1',         // slate-300 border
-    surface: 'rgba(255, 255, 255, 0.85)',
+  {
+    id: 'slate-glow',
+    name: 'Slate Glow',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #475569 100%)',
+      text: '#0f172a',           // dark text for contrast
+      icon: '#475569',           // slate-600 accent
+      border: '#cbd5e1',         // slate-300 border
+      surface: 'rgba(255, 255, 255, 0.85)',
+    },
   },
-},
-{
-  id: 'teal-glow',
-  name: 'Teal Glow',
-  type: 'gradient',
-  mode: 'light',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #14b8a6 100%)',
-    text: '#0f172a',
-    icon: '#14b8a6',           // teal-500 accent
-    border: '#99f6e4',         // teal-200 border
-    surface: 'rgba(255, 255, 255, 0.85)',
+  {
+    id: 'teal-glow',
+    name: 'Teal Glow',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #14b8a6 100%)',
+      text: '#0f172a',
+      icon: '#14b8a6',           // teal-500 accent
+      border: '#99f6e4',         // teal-200 border
+      surface: 'rgba(255, 255, 255, 0.85)',
+    },
   },
-},
-{
-  id: 'pink-glow',
-  name: 'Pink Glow',
-  type: 'gradient',
-  mode: 'light',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #ec4899 100%)',
-    text: '#0f172a',
-    icon: '#ec4899',           // pink-500 accent
-    border: '#fbcfe8',         // pink-200 border
-    surface: 'rgba(255, 255, 255, 0.85)',
+  {
+    id: 'pink-glow',
+    name: 'Pink Glow',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #ec4899 100%)',
+      text: '#0f172a',
+      icon: '#ec4899',           // pink-500 accent
+      border: '#fbcfe8',         // pink-200 border
+      surface: 'rgba(255, 255, 255, 0.85)',
+    },
   },
-},
-{
-  id: 'emerald-glow',
-  name: 'Emerald Glow',
-  type: 'gradient',
-  mode: 'light',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #10b981 100%)',
-    text: '#064e3b',           // emerald-900 for contrast
-    icon: '#10b981',           // emerald-500 accent
-    border: '#a7f3d0',         // emerald-200 border
-    surface: 'rgba(255, 255, 255, 0.85)',
+  {
+    id: 'emerald-glow',
+    name: 'Emerald Glow',
+    type: 'gradient',
+    mode: 'light',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 10%, #ffffff 40%, #10b981 100%)',
+      text: '#064e3b',           // emerald-900 for contrast
+      icon: '#10b981',           // emerald-500 accent
+      border: '#a7f3d0',         // emerald-200 border
+      surface: 'rgba(255, 255, 255, 0.85)',
+    },
   },
-},
-{
-  id: 'dark-horizon-glow',
-  name: 'Dark Horizon Glow',
-  type: 'gradient',
-  mode: 'dark',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 90%, #000000 40%, #0d1a36 100%)',
-    text: '#e2e8f0',          // slate-200 for visibility on dark backgrounds
-    icon: '#60a5fa',          // blue-400 accent for highlights
-    border: '#1e293b',        // slate-800 border
-    surface: 'rgba(15, 23, 42, 0.7)', // translucent navy surface for nav/cards
+  {
+    id: 'dark-horizon-glow',
+    name: 'Dark Horizon Glow',
+    type: 'gradient',
+    mode: 'dark',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 90%, #000000 40%, #0d1a36 100%)',
+      text: '#e2e8f0',          // slate-200 for visibility on dark backgrounds
+      icon: '#60a5fa',          // blue-400 accent for highlights
+      border: '#1e293b',        // slate-800 border
+      surface: 'rgba(15, 23, 42, 0.7)', // translucent navy surface for nav/cards
+    },
   },
-},
-{
-  id: 'azure-depths',
-  name: 'Azure Depths',
-  type: 'gradient',
-  mode: 'dark',
-  colors: {
-    background: 'radial-gradient(125% 125% at 50% 100%, #000000 40%, #010133 100%)',
-    text: '#ffffff',            // white text for contrast on dark background
-    icon: '#60a5fa',            // blue accent for icons/highlights
-    border: '#1e293b',          // dark border similar to slate-800
-    surface: 'rgba(1, 1, 51, 0.7)', // translucent deep-blue surface for cards/panels
+  {
+    id: 'azure-depths',
+    name: 'Azure Depths',
+    type: 'gradient',
+    mode: 'dark',
+    colors: {
+      background: 'radial-gradient(125% 125% at 50% 100%, #000000 40%, #010133 100%)',
+      text: '#ffffff',            // white text for contrast on dark background
+      icon: '#60a5fa',            // blue accent for icons/highlights
+      border: '#1e293b',          // dark border similar to slate-800
+      surface: 'rgba(1, 1, 51, 0.7)', // translucent deep-blue surface for cards/panels
+    },
   },
-},
-{
-  id: 'paper-texture',
-  name: 'Paper Texture',
-  type: 'pattern',
-  mode: 'light',
-  colors: {
-    background: '#faf9f6',  // light base color
-    text: '#111827',         // dark text for contrast
-    icon: '#6b7280',         // gray icons
-    border: '#d1d5db',       // light gray border
-    surface: 'rgba(250, 249, 246, 0.9)', // translucent surface for cards/panels
+  {
+    id: 'paper-texture',
+    name: 'Paper Texture',
+    type: 'pattern',
+    mode: 'light',
+    colors: {
+      background: '#faf9f6',  // light base color
+      text: '#111827',         // dark text for contrast
+      icon: '#6b7280',         // gray icons
+      border: '#d1d5db',       // light gray border
+      surface: 'rgba(250, 249, 246, 0.9)', // translucent surface for cards/panels
+    },
+    patternImage: `
+      radial-gradient(circle at 1px 1px, rgba(0,0,0,0.08) 1px, transparent 0),
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px)
+    `,
+    backgroundSize: '8px 8px, 32px 32px, 32px 32px',
   },
-  patternImage: `
-    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.08) 1px, transparent 0),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px),
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px)
-  `,
-  backgroundSize: '8px 8px, 32px 32px, 32px 32px',
-},
-{
-  id: 'diagonal-stripes-background',
-  name: 'Diagonal Stripes Background',
-  type: 'pattern',
-  mode: 'light',
-  colors: {
-    background: '#ffffff',          // base white background
-    text: '#111827',                // dark text
-    icon: '#6b7280',                // gray icons
-    border: '#d1d5db',              // light gray border
-    surface: 'rgba(255, 255, 255, 0.9)', // translucent surface for cards/panels
+  {
+    id: 'diagonal-stripes-background',
+    name: 'Diagonal Stripes Background',
+    type: 'pattern',
+    mode: 'light',
+    colors: {
+      background: '#ffffff',          // base white background
+      text: '#111827',                // dark text
+      icon: '#6b7280',                // gray icons
+      border: '#d1d5db',              // light gray border
+      surface: 'rgba(255, 255, 255, 0.9)', // translucent surface for cards/panels
+    },
+    patternImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, #f3f4f6 2px, #f3f4f6 4px)',
+    backgroundSize: undefined,
   },
-  patternImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, #f3f4f6 2px, #f3f4f6 4px)',
-  backgroundSize: undefined,
-},
-{
-  id: 'diagonal-grid-light',
-  name: 'Diagonal Grid with Light',
-  type: 'pattern',
-  mode: 'light',
-  colors: {
-    background: '#fafafa',          // light gray background
-    text: '#111827',                // dark text
-    icon: '#6b7280',                // gray icons
-    border: '#d1d5db',              // light gray border
-    surface: 'rgba(250, 250, 250, 0.9)', // translucent surface for cards/panels
+  {
+    id: 'diagonal-grid-light',
+    name: 'Diagonal Grid with Light',
+    type: 'pattern',
+    mode: 'light',
+    colors: {
+      background: '#fafafa',          // light gray background
+      text: '#111827',                // dark text
+      icon: '#6b7280',                // gray icons
+      border: '#d1d5db',              // light gray border
+      surface: 'rgba(250, 250, 250, 0.9)', // translucent surface for cards/panels
+    },
+    patternImage: `
+      repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px),
+      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px)
+    `,
+    backgroundSize: '40px 40px',
   },
-  patternImage: `
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px),
-    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px)
-  `,
-  backgroundSize: '40px 40px',
-},
-{
-  id: 'crosshatch-art-light',
-  name: 'Crosshatch Art - Light Pattern',
-  type: 'pattern',
-  mode: 'light',
-  colors: {
-    background: '#ffffff',          // base white background
-    text: '#1f2937',                // gray-800 text
-    icon: '#6b7280',                // gray icons
-    border: '#d1d5db',              // light gray border
-    surface: 'rgba(255, 255, 255, 0.9)', // translucent surface for cards/panels
+  {
+    id: 'crosshatch-art-light',
+    name: 'Crosshatch Art - Light Pattern',
+    type: 'pattern',
+    mode: 'light',
+    colors: {
+      background: '#ffffff',          // base white background
+      text: '#1f2937',                // gray-800 text
+      icon: '#6b7280',                // gray icons
+      border: '#d1d5db',              // light gray border
+      surface: 'rgba(255, 255, 255, 0.9)', // translucent surface for cards/panels
+    },
+    patternImage: `
+      repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+      repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+      repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+      repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px)
+    `,
+    backgroundSize: undefined,
   },
-  patternImage: `
-    repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
-    repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
-    repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
-    repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px)
-  `,
-  backgroundSize: undefined,
-},
-{
-  id: 'magenta-orb-grid',
-  name: 'Magenta Orb Grid Background',
-  type: 'pattern',
-  mode: 'dark',
-  colors: {
-    background: '#020617',
-    text: '#e2e8f0',
-    icon: '#ec4899',
-    border: '#475569',
-    surface: 'rgba(2, 6, 23, 0.8)',
+  {
+    id: 'magenta-orb-grid',
+    name: 'Magenta Orb Grid Background',
+    type: 'pattern',
+    mode: 'dark',
+    colors: {
+      background: '#020617',
+      text: '#e2e8f0',
+      icon: '#ec4899',
+      border: '#475569',
+      surface: 'rgba(2, 6, 23, 0.8)',
+    },
+    patternImage: `
+      linear-gradient(to right, rgba(71,85,105,0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(71,85,105,0.4) 1px, transparent 1px),
+      radial-gradient(circle at 50% 60%, rgba(236,72,153,0.3) 0%, rgba(168,85,247,0.2) 40%, transparent 70%)
+    `,
+    backgroundSize: '40px 40px, 40px 40px, 100% 100%',
   },
-  patternImage: `
-    linear-gradient(to right, rgba(71,85,105,0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(71,85,105,0.4) 1px, transparent 1px),
-    radial-gradient(circle at 50% 60%, rgba(236,72,153,0.3) 0%, rgba(168,85,247,0.2) 40%, transparent 70%)
-  `,
-  backgroundSize: '40px 40px, 40px 40px, 100% 100%',
-},
-{
-  id: 'crosshatch-art-dark',
-  name: 'Crosshatch Art - Dark Pattern',
-  type: 'pattern',
-  mode: 'dark',
-  colors: {
-    background: '#0f0f0f',
-    text: '#ffffff',
-    icon: '#10b981',
-    border: '#374151',
-    surface: 'rgba(15, 15, 15, 0.95)',
+  {
+    id: 'crosshatch-art-dark',
+    name: 'Crosshatch Art - Dark Pattern',
+    type: 'pattern',
+    mode: 'dark',
+    colors: {
+      background: '#0f0f0f',
+      text: '#ffffff',
+      icon: '#10b981',
+      border: '#374151',
+      surface: 'rgba(15, 15, 15, 0.95)',
+    },
+    patternImage: `
+      repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(16, 185, 129, 0.55) 2px, rgba(16, 185, 129, 0.55) 3px, transparent 3px, transparent 8px),
+      repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(245, 101, 101, 0.45) 2px, rgba(245, 101, 101, 0.45) 3px, transparent 3px, transparent 8px),
+      repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(234, 179, 8, 0.4) 2px, rgba(234, 179, 8, 0.4) 3px, transparent 3px, transparent 8px),
+      repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(249, 115, 22, 0.35) 2px, rgba(249, 115, 22, 0.35) 3px, transparent 3px, transparent 8px)
+    `,
+    backgroundSize: undefined,
   },
-  patternImage: `
-    repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(16, 185, 129, 0.55) 2px, rgba(16, 185, 129, 0.55) 3px, transparent 3px, transparent 8px),
-    repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(245, 101, 101, 0.45) 2px, rgba(245, 101, 101, 0.45) 3px, transparent 3px, transparent 8px),
-    repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(234, 179, 8, 0.4) 2px, rgba(234, 179, 8, 0.4) 3px, transparent 3px, transparent 8px),
-    repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(249, 115, 22, 0.35) 2px, rgba(249, 115, 22, 0.35) 3px, transparent 3px, transparent 8px)
-  `,
-  backgroundSize: undefined,
-},
-{
-  id: 'striped-dark',
-  name: 'Striped Dark',
-  type: 'pattern',
-  mode: 'dark',
-  colors: {
-    background: '#000000',
-    text: '#ffffff',
-    icon: '#f87171',
-    border: '#111111',
-    surface: 'rgba(0, 0, 0, 0.95)',
+  {
+    id: 'striped-dark',
+    name: 'Striped Dark',
+    type: 'pattern',
+    mode: 'dark',
+    colors: {
+      background: '#000000',
+      text: '#ffffff',
+      icon: '#f87171',
+      border: '#111111',
+      surface: 'rgba(0, 0, 0, 0.95)',
+    },
+    patternImage: 'repeating-linear-gradient(45deg, #000 0px, #2a2a2a 2px, #000 4px, #3a3a3a 6px)',
+    backgroundSize: undefined,
   },
-  patternImage: 'repeating-linear-gradient(45deg, #000 0px, #2a2a2a 2px, #000 4px, #3a3a3a 6px)',
-  backgroundSize: undefined,
-},
-{
-  id: 'dark-circuit-board',
-  name: 'Dark Circuit Board Background',
-  type: 'pattern',
-  mode: 'dark',
-  colors: {
-    background: '#171717',                 // dark gray base
-    text: '#e2e8f0',                       // light text
-    icon: '#10b981',                        // green accent
-    border: '#262626',                       // slightly lighter dark
-    surface: 'rgba(23, 23, 23, 0.9)',       // translucent surface
+  {
+    id: 'dark-circuit-board',
+    name: 'Dark Circuit Board Background',
+    type: 'pattern',
+    mode: 'dark',
+    colors: {
+      background: '#171717',                 // dark gray base
+      text: '#e2e8f0',                       // light text
+      icon: '#10b981',                        // green accent
+      border: '#262626',                       // slightly lighter dark
+      surface: 'rgba(23, 23, 23, 0.9)',       // translucent surface
+    },
+    patternImage: `
+      linear-gradient(90deg, #171717 1px, transparent 1px),
+      linear-gradient(180deg, #171717 1px, transparent 1px),
+      linear-gradient(90deg, #262626 1px, transparent 1px),
+      linear-gradient(180deg, #262626 1px, transparent 1px)
+    `,
+    backgroundSize: '50px 50px, 50px 50px, 10px 10px, 10px 10px',
   },
-  patternImage: `
-    linear-gradient(90deg, #171717 1px, transparent 1px),
-    linear-gradient(180deg, #171717 1px, transparent 1px),
-    linear-gradient(90deg, #262626 1px, transparent 1px),
-    linear-gradient(180deg, #262626 1px, transparent 1px)
-  `,
-  backgroundSize: '50px 50px, 50px 50px, 10px 10px, 10px 10px',
-},
-{
-  id: 'circuit-board-dark',
-  name: 'Circuit Board - Dark Pattern',
-  type: 'pattern',
-  mode: 'dark',
-  colors: {
-    background: '#0f0f0f',
-    text: '#ffffff',
-    icon: '#22c55e',
-    border: '#111111',
-    surface: 'rgba(15, 15, 15, 0.95)',
+  {
+    id: 'circuit-board-dark',
+    name: 'Circuit Board - Dark Pattern',
+    type: 'pattern',
+    mode: 'dark',
+    colors: {
+      background: '#0f0f0f',
+      text: '#ffffff',
+      icon: '#22c55e',
+      border: '#111111',
+      surface: 'rgba(15, 15, 15, 0.95)',
+    },
+    patternImage: `
+      repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(34, 197, 94, 0.4) 19px, rgba(34, 197, 94, 0.4) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.4) 39px, rgba(34, 197, 94, 0.4) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(34, 197, 94, 0.4) 19px, rgba(34, 197, 94, 0.4) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.4) 39px, rgba(34, 197, 94, 0.4) 40px),
+      radial-gradient(circle at 20px 20px, rgba(16, 185, 129, 0.5) 2px, transparent 2px),
+      radial-gradient(circle at 40px 40px, rgba(16, 185, 129, 0.5) 2px, transparent 2px)
+    `,
+    backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
   },
-  patternImage: `
-    repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(34, 197, 94, 0.4) 19px, rgba(34, 197, 94, 0.4) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.4) 39px, rgba(34, 197, 94, 0.4) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(34, 197, 94, 0.4) 19px, rgba(34, 197, 94, 0.4) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.4) 39px, rgba(34, 197, 94, 0.4) 40px),
-    radial-gradient(circle at 20px 20px, rgba(16, 185, 129, 0.5) 2px, transparent 2px),
-    radial-gradient(circle at 40px 40px, rgba(16, 185, 129, 0.5) 2px, transparent 2px)
-  `,
-  backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
-}
-
-
 ];
 
 export const defaultTheme = themes[0];
