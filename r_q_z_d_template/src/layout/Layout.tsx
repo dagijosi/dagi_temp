@@ -10,7 +10,7 @@ const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true); 
 
   return (
-    <div className="flex h-screen bg-gray-50 font-sans antialiased"> {/* BG and Font */}
+    <div className="flex h-screen bg-transparent font-sans antialiased text-theme-text"> {/* BG handled by body, font color inherited */}
       
       {/* 1. Sidebar */}
       <Sidebar 
@@ -21,12 +21,12 @@ const Layout = () => {
       {/* 2. Main Content Area */}
       <div 
         className={`
-          flex-1 flex flex-col overflow-hidden transition-all duration-300
+          flex-1 flex flex-col overflow-hidden transition-all duration-500 ease-in-out
           ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'} 
         `}
       >
         {/* Top Navigation */}
-        <header className="bg-white sticky top-0 z-10 shadow-sm border-b border-gray-100">
+        <header className="bg-theme-surface sticky top-0 z-10 shadow-sm border-b border-theme-border transition-colors duration-300">
           <TopNav 
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen} 

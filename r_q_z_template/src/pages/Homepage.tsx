@@ -1,6 +1,8 @@
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { toast } from 'sonner';
+import { Button } from '../components/ui';
+import { FaGithub } from 'react-icons/fa';
 
 const features = [
   {
@@ -36,136 +38,158 @@ const features = [
 ];
 
 const FeaturesSection = () => (
-  <div id="features" className="bg-gray-900 py-24 sm:py-32">
+  <div id="features" className="py-24 sm:py-32 relative z-10">
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
-      <div className="mx-auto max-w-2xl lg:text-center">
-        <h2 className="text-base font-semibold leading-7 text-indigo-400">Template Features</h2>
-        <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Everything you need to start your project
+      <div className="mx-auto max-w-2xl lg:text-center mb-16">
+        <h2 className="text-base font-semibold leading-7 text-theme-icon tracking-wide uppercase">Template Features</h2>
+        <p className="mt-2 text-3xl font-extrabold tracking-tight text-theme-text sm:text-4xl">
+          Everything you need to build faster
         </p>
-        <p className="mt-6 text-lg leading-8 text-gray-300">
-          This template comes with a set of modern tools and libraries to help you build your next big idea.
+        <p className="mt-6 text-lg leading-8 text-theme-text/70">
+          This template provides a robust foundation with curated best-practices, allowing you to focus on building features instead of configuration.
         </p>
       </div>
-      <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-        <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.name}
-              className="flex flex-col"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
-                <span className="text-2xl">{feature.icon}</span>
-                {feature.name}
-              </dt>
-              <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
-                <p className="flex-auto">{feature.description}</p>
-              </dd>
-            </motion.div>
-          ))}
-        </dl>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {features.map((feature, index) => (
+          <motion.div
+            key={feature.name}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            className="group relative p-8 rounded-2xl bg-theme-surface/50 border border-theme-border hover:border-theme-icon/50 hover:bg-theme-surface/80 hover:shadow-xl hover:shadow-theme-icon/10 transition-all duration-300"
+          >
+             <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-theme-icon to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl"></div>
+             
+             <div className="flex items-center gap-4 mb-4">
+               <span className="text-4xl filter drop-shadow-md group-hover:scale-110 transition-transform duration-300">{feature.icon}</span>
+               <h3 className="text-xl font-bold text-theme-text">{feature.name}</h3>
+             </div>
+             
+             <p className="text-theme-text/70 leading-relaxed font-medium">
+               {feature.description}
+             </p>
+          </motion.div>
+        ))}
       </div>
     </div>
   </div>
 );
 
 const Homepage = () => {
-  return (
-    <div className="bg-gray-900">
-      <main>
-        <div className="relative isolate overflow-hidden">
-          {/* Gradient background */}
-          <div className="absolute inset-0 bg-linear-to-r from-purple-900 via-indigo-800 to-blue-800 opacity-75" />
-          
-          {/* Decorative blobs */}
-          <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob" />
-          <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-20 left-20 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000" />
+    
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
+    }
+  };
 
-          <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-            <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
-              <div className="relative w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                  Build modern web apps, faster.
-                </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-300 sm:max-w-md lg:max-w-none">
-                  This interactive template is powered by Vite, React, TypeScript, and Tailwind CSS. 
-                  Jumpstart your development with a feature-rich, production-ready setup.
-                </p>
-                <div className="mt-10 flex items-center gap-x-6">
-                  <a
-                    href="#features"
-                    className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-indigo-400  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-transform transform hover:scale-105"
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
+  };
+
+  return (
+    <div className="relative overflow-hidden min-h-screen">
+      
+      {/* Background Decor - ensuring it sits behind content */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[10%] left-[20%] w-[30rem] h-[30rem] bg-purple-500/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob" />
+          <div className="absolute top-[20%] right-[20%] w-[25rem] h-[25rem] bg-indigo-500/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000" />
+          <div className="absolute bottom-[20%] left-[30%] w-[35rem] h-[35rem] bg-blue-500/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-4000" />
+      </div>
+
+      <main className="relative z-10 pt-32 pb-16 lg:pt-48 lg:pb-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+            
+            <motion.div 
+               variants={containerVariants}
+               initial="hidden"
+               animate="visible"
+               className="mx-auto max-w-3xl"
+            >
+               <motion.div variants={itemVariants} className="mb-8 flex justify-center">
+                  <span className="px-4 py-1.5 rounded-full bg-theme-surface border border-theme-border text-xs font-semibold text-theme-icon shadow-sm tracking-wide uppercase">
+                    v1.0.0 is now live
+                  </span>
+               </motion.div>
+
+               <motion.h1 
+                 variants={itemVariants}
+                 className="text-5xl font-extrabold tracking-tight text-theme-text sm:text-7xl mb-6 leading-tight"
+               >
+                 Build modern web apps <br />
+                 <span className="bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                   with extreme speed.
+                 </span>
+               </motion.h1>
+
+               <motion.p 
+                 variants={itemVariants}
+                 className="mt-6 text-lg leading-8 text-theme-text/80 max-w-2xl mx-auto"
+               >
+                 This interactive template is powered by Vite, React, TypeScript, and Tailwind CSS. 
+                 Jumpstart your development with a feature-rich, production-ready setup that looks beautiful out of the box.
+               </motion.p>
+               
+               <motion.div 
+                 variants={itemVariants}
+                 className="mt-10 flex items-center justify-center gap-x-4"
+               >
+                  <Button 
+                    size="lg" 
+                    onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="shadow-xl shadow-indigo-500/20"
                   >
-                    Get started
-                  </a>
-                  <button
-                    onClick={() => toast.success('This is a toast notification!')}
-                    className="rounded-md bg-green-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-green-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500 transition-transform transform hover:scale-105"
+                    Get Started
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    leftIcon={<FaGithub />}
+                    onClick={() => window.open('https://github.com', '_blank')}
                   >
-                    Show Toast
-                  </button>
-                </div>
-              </div>
-              <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
-                <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-0 xl:pt-80">
-                  <div className="relative">
-                    <img
-                      src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
-                      alt="A team of people working on a project"
-                      className="aspect-2/3 w-full rounded-xl bg-gray-900/5 object-cover shadow-2xl"
-                    />
-                    <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
-                  </div>
-                </div>
-                <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
-                  <div className="relative">
-                    <img
-                      src="https://images.unsplash.com/photo-1485217988980-1178612g1e6&auto=format&fit=crop&h=528&q=80"
-                      alt="A person coding on a laptop"
-                      className="aspect-2/3 w-full rounded-xl bg-gray-900/5 object-cover shadow-2xl"
-                    />
-                    <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
-                  </div>
-                  <div className="relative">
-                    <img
-                      src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
-                      alt="A modern office setup"
-                      className="aspect-2/3 w-full rounded-xl bg-gray-900/5 object-cover shadow-2xl"
-                    />
-                    <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
-                  </div>
-                </div>
-                <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
-                  <div className="relative">
-                    <img
-                      src="https://images.unsplash.com/photo-1670272504528-790c24957dda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
-                      alt="A person using a tablet"
-                      className="aspect-2/3 w-full rounded-xl bg-gray-900/5 object-cover shadow-2xl"
-                    />
-                    <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
-                  </div>
-                  <div className="relative">
-                    <img
-                      src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
-                      alt="A person writing on a whiteboard"
-                      className="aspect-2/3 w-full rounded-xl bg-gray-900/5 object-cover shadow-2xl"
-                    />
-                    <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    GitHub
+                  </Button>
+               </motion.div>
+                 
+                <motion.div variants={itemVariants} className="mt-8">
+                     <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        onClick={() => toast.success('This is a custom toast!')}
+                     >
+                        Test Toast Notification
+                     </Button>
+                </motion.div>
+            </motion.div>
+
+             {/* Hero Image Section */}
+             <motion.div 
+               initial={{ opacity: 0, y: 50, scale: 0.95 }}
+               animate={{ opacity: 1, y: 0, scale: 1 }}
+               transition={{ delay: 0.6, duration: 0.8 }}
+               className="mt-20 relative mx-auto max-w-5xl rounded-2xl border border-theme-border bg-theme-surface/50 p-2 backdrop-blur-sm shadow-2xl"
+             >
+                <div className="absolute -inset-1 bg-linear-to-r from-theme-icon to-purple-600 rounded-3xl opacity-20 blur-lg -z-10"></div>
+                <img 
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2600&q=80" 
+                  alt="App screenshot" 
+                  className="rounded-xl shadow-inner border border-theme-border/50 w-full"
+                />
+             </motion.div>
+
         </div>
+        
         <FeaturesSection />
+
       </main>
     </div>
   );
 };
 
-export default Homepage
+export default Homepage;

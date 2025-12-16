@@ -38,7 +38,7 @@ const LoadingComponent: React.FC<LoadingComponentProps> = ({
 
   return (
     <motion.div
-      className={`flex fixed inset-0 z-50 flex-col justify-center items-center backdrop-blur-md bg-slate-50/60 ${className}`}
+      className={`flex fixed inset-0 z-50 flex-col justify-center items-center backdrop-blur-md bg-theme-surface/60 ${className}`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -61,7 +61,7 @@ const LoadingComponent: React.FC<LoadingComponentProps> = ({
 
       {/* Animated text */}
       <motion.p
-        className="mt-6 text-xl font-semibold text-gray-700 text-center max-w-xs"
+        className="mt-6 text-xl font-semibold text-theme-text text-center max-w-xs"
         variants={textVariants}
         initial="hidden"
         animate="visible"

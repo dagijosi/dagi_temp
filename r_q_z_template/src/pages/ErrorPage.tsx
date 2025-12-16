@@ -1,15 +1,53 @@
+import { motion } from 'framer-motion';
+import { Button } from '../components/ui';
+import { AlertCircle } from 'lucide-react';
 
 const ErrorPage = () => {
   return (
-  <div className="flex flex-col justify-center items-center p-4 min-h-screen text-center bg-gray-900 sm:p-6 lg:p-8">
-    <p className="mb-4 text-6xl font-extrabold text-indigo-500 animate-pulse sm:text-7xl md:text-8xl lg:text-9xl sm:mb-6">{"404"}</p>
-    <h1 className="mb-4 text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl sm:mb-6">{"Page Not Found"}</h1>
-    <p className="mx-auto mb-8 max-w-xl text-base text-gray-300 sm:text-lg md:text-xl sm:mb-10">{"Oops! The page you're looking for doesn't exist or has been moved. It might be a broken link or a typo."}</p>
-    <div className="flex flex-col gap-4 sm:flex-row">
-      <a className="px-6 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:bg-indigo-700 sm:text-xl" href="/">{"Go to Homepage"}</a>
-      <a className="px-6 py-3 text-lg font-semibold text-gray-200 bg-gray-700 rounded-lg border border-gray-600 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-600 sm:text-xl" href="/contact">{"Contact Support"}</a>
+    <div className="flex flex-col justify-center items-center min-h-screen text-center p-6 relative overflow-hidden">
+       {/* Background Effects */}
+       <div className="absolute inset-0 z-0 opacity-30">
+          <div className="absolute top-[20%] left-[20%] w-[30rem] h-[30rem] bg-theme-icon/20 rounded-full filter blur-[100px] animate-blob" />
+          <div className="absolute bottom-[20%] right-[20%] w-[30rem] h-[30rem] bg-purple-500/20 rounded-full filter blur-[100px] animate-blob animation-delay-2000" />
+       </div>
+
+       <motion.div 
+         initial={{ opacity: 0, scale: 0.9 }}
+         animate={{ opacity: 1, scale: 1 }}
+         transition={{ duration: 0.5 }}
+         className="relative z-10 max-w-2xl mx-auto backdrop-blur-sm bg-theme-surface/30 p-12 rounded-3xl border border-theme-border shadow-2xl"
+       >
+         <motion.div 
+           initial={{ y: -20, opacity: 0 }}
+           animate={{ y: 0, opacity: 1 }}
+           transition={{ delay: 0.2 }}
+           className="flex justify-center mb-6"
+         >
+           <div className="p-4 bg-theme-surface rounded-full border border-theme-border shadow-inner">
+             <AlertCircle size={64} className="text-theme-icon" />
+           </div>
+         </motion.div>
+
+         <h1 className="mb-4 text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-theme-text to-theme-text/20">
+            404
+         </h1>
+         
+         <h2 className="mb-6 text-3xl font-bold text-theme-text">Page Not Found</h2>
+         
+         <p className="mb-10 text-lg text-theme-text/70 leading-relaxed max-w-md mx-auto">
+            Oops! The page you're looking for seems to have vanished into the digital void. It might have been moved or doesn't exist.
+         </p>
+
+         <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" onClick={() => window.location.href = "/"}>
+               Go Back Home
+            </Button>
+            <Button size="lg" variant="outline" onClick={() => window.location.href = "/contact"}>
+               Contact Support
+            </Button>
+         </div>
+      </motion.div>
     </div>
-  </div>
   );
 };
 

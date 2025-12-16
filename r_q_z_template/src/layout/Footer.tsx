@@ -1,33 +1,68 @@
-import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaHeart } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-theme-surface border-t border-theme-border text-theme-text mt-auto">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-        <div className="flex justify-center space-x-6">
-          <a href="#" className="text-gray-400 hover:text-white">
-            <span className="sr-only">GitHub</span>
-            <FaGithub className="h-6 w-6" />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-white">
-            <span className="sr-only">Twitter</span>
-            <FaTwitter className="h-6 w-6" />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-white">
-            <span className="sr-only">LinkedIn</span>
-            <FaLinkedin className="h-6 w-6" />
-          </a>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          {/* Brand Column */}
+          <div className="col-span-1 md:col-span-1">
+            <a href="#" className="flex items-center gap-2 mb-4">
+               <span className="text-xl font-bold bg-theme-icon text-white p-1 rounded-md">⚡</span>
+               <span className="font-bold text-lg tracking-tight">Dagi Template</span>
+            </a>
+            <p className="text-sm text-theme-text/60 leading-relaxed">
+              A premium, production-ready template for building modern web applications with speed and style.
+            </p>
+          </div>
+
+          {/* Links Column 1 */}
+          <div>
+            <h3 className="font-semibold mb-4 text-theme-text">Product</h3>
+            <ul className="space-y-3 text-sm text-theme-text/70">
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Features</a></li>
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Integrations</a></li>
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Documentation</a></li>
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Pricing</a></li>
+            </ul>
+          </div>
+
+           {/* Links Column 2 */}
+           <div>
+            <h3 className="font-semibold mb-4 text-theme-text">Company</h3>
+            <ul className="space-y-3 text-sm text-theme-text/70">
+              <li><a href="#" className="hover:text-theme-icon transition-colors">About</a></li>
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Blog</a></li>
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Carrers</a></li>
+              <li><a href="#" className="hover:text-theme-icon transition-colors">Contact</a></li>
+            </ul>
+          </div>
+
+          {/* Newsletter / Social */}
+          <div>
+             <h3 className="font-semibold mb-4 text-theme-text">Connect</h3>
+             <div className="flex space-x-4 mb-6">
+                <a href="#" className="p-2 rounded-full bg-theme-surface border border-theme-border text-theme-text/70 hover:text-theme-icon hover:border-theme-icon transition-all shadow-sm">
+                  <FaGithub size={20} />
+                </a>
+                <a href="#" className="p-2 rounded-full bg-theme-surface border border-theme-border text-theme-text/70 hover:text-theme-icon hover:border-theme-icon transition-all shadow-sm">
+                  <FaTwitter size={20} />
+                </a>
+                <a href="#" className="p-2 rounded-full bg-theme-surface border border-theme-border text-theme-text/70 hover:text-theme-icon hover:border-theme-icon transition-all shadow-sm">
+                   <FaLinkedin size={20} />
+                </a>
+             </div>
+          </div>
         </div>
-        <nav className="mt-10" aria-label="Footer">
-          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <li><a href="#" className="text-sm leading-6 text-gray-300 hover:text-white">About</a></li>
-            <li><a href="#" className="text-sm leading-6 text-gray-300 hover:text-white">Projects</a></li>
-            <li><a href="#" className="text-sm leading-6 text-gray-300 hover:text-white">Contact</a></li>
-          </ul>
-        </nav>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-400">
-          &copy; {new Date().getFullYear()} Your Company, Inc. All rights reserved.
-        </p>
+
+        <div className="pt-8 border-t border-theme-border flex flex-col md:flex-row justify-between items-center gap-4">
+           <p className="text-xs text-theme-text/50">
+             &copy; {new Date().getFullYear()} Dagi Template. All rights reserved.
+           </p>
+           <p className="text-xs text-theme-text/50 flex items-center gap-1">
+             Made with <FaHeart className="text-red-500 animate-pulse" /> by Dagi
+           </p>
+        </div>
       </div>
     </footer>
   );

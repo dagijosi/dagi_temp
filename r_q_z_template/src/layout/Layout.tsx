@@ -5,9 +5,9 @@ import Header from "./Header";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-linear-to-r from-purple-900 via-indigo-800 to-blue-800">
+    <div className="flex flex-col min-h-screen text-theme-text overflow-x-hidden transition-colors duration-300">
       <Header />
-      <main className="grow transition-all duration-500 pt-16">
+      <main className="grow pt-16">
         <Outlet />
       </main>
       <Footer />
