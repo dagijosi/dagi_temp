@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link, useLocation } from "react-router-dom"; 
-import { FaHome, FaInfoCircle, FaEnvelope, FaTimes, FaAngleDoubleLeft, FaAngleDoubleRight, FaChartLine, FaLayerGroup } from "react-icons/fa";
+import { FaInfoCircle, FaTimes, FaAngleDoubleLeft, FaAngleDoubleRight, FaChartLine, FaLayerGroup } from "react-icons/fa";
 import { DASHBOARD, SETTING } from "../routes/types/routeConstants";
 
 interface SidebarProps {
