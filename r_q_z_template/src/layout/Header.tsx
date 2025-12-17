@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Github, Settings } from 'lucide-react';
 import { Button } from '../components/ui';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { SETTINGS, HOME } from '../routes/types/routeConstants';
+import { SETTINGS, HOME, ABOUT, PRICING, CONTACT } from '../routes/types/routeConstants';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,26 +21,30 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavigation = (sectionId: string) => {
+  const handleNavigation = (path: string, hash?: string) => {
     setIsMobileMenuOpen(false);
-    if (location.pathname !== HOME) {
-        navigate(HOME);
-        // Defer scroll to allow page load
-        setTimeout(() => {
-           const element = document.getElementById(sectionId);
-           element?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+    if (hash) {
+        if (location.pathname !== HOME) {
+            navigate(HOME);
+            setTimeout(() => {
+                const element = document.getElementById(hash.substring(1));
+                element?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        } else {
+            const element = document.getElementById(hash.substring(1));
+            element?.scrollIntoView({ behavior: 'smooth' });
+        }
     } else {
-        const element = document.getElementById(sectionId);
-        element?.scrollIntoView({ behavior: 'smooth' });
+        navigate(path);
+        window.scrollTo(0, 0);
     }
   };
 
   const navLinks = [
-    { name: 'Features', id: 'features' },
-    { name: 'Documentation', id: 'docs' },
-    { name: 'Pricing', id: 'pricing' },
-    { name: 'About', id: 'about' },
+    { name: 'Features', path: HOME, hash: '#features' },
+    { name: 'Pricing', path: PRICING },
+    { name: 'About', path: ABOUT },
+    { name: 'Contact', path: CONTACT },
   ];
 
   return (
@@ -70,7 +74,7 @@ const Header = () => {
             {navLinks.map((item) => (
               <button
                 key={item.name}
-                onClick={() => handleNavigation(item.id)}
+                onClick={() => handleNavigation(item.path, item.hash)}
                 className="relative text-sm font-semibold leading-6 text-theme-text/80 hover:text-theme-text transition-colors group py-2"
               >
                 {item.name}
@@ -138,7 +142,7 @@ const Header = () => {
               {navLinks.map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => handleNavigation(item.id)}
+                  onClick={() => handleNavigation(item.path, item.hash)}
                   className="block w-full text-left rounded-lg px-3 py-2 text-base font-semibold leading-7 text-theme-text hover:bg-theme-surface/50 hover:text-theme-icon transition-colors"
                 >
                   {item.name}

@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Link, useLocation } from "react-router-dom"; 
-import { FaInfoCircle, FaTimes, FaAngleDoubleLeft, FaAngleDoubleRight, FaChartLine, FaLayerGroup } from "react-icons/fa";
-import { DASHBOARD, SETTING } from "../routes/types/routeConstants";
+import { FaInfoCircle, FaTimes, FaAngleDoubleLeft, FaAngleDoubleRight, FaChartLine, FaLayerGroup, FaUsers, FaHistory, FaUser } from "react-icons/fa";
+import { DASHBOARD, SETTING, PROFILE, USERS, ACTIVITY } from "../routes/types/routeConstants";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,7 +15,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const currentPath = location.pathname;
 
   const links = [
-    { name: "Dashboard", href: DASHBOARD, icon: FaChartLine }, 
+    { name: "Dashboard", href: DASHBOARD, icon: FaChartLine },
+    { name: "Users", href: USERS, icon: FaUsers },
+    { name: "Activity", href: ACTIVITY, icon: FaHistory }, 
+    { name: "Profile", href: PROFILE, icon: FaUser },
     { name: "Settings", href: SETTING, icon: FaInfoCircle },
   ];
 

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { FaBars, FaBell, FaSearch, FaCog } from "react-icons/fa";
+import { FaBars, FaSearch, FaCog } from "react-icons/fa";
 import { SETTING } from "../routes/types/routeConstants";
 import { useNavigate, useLocation } from "react-router-dom";
 import CustomDropdown from "../components/ui/CustomDropdown";
+import NotificationDropdown from "../components/ui/NotificationDropdown";
 
 interface TopNavProps {
   sidebarOpen: boolean;
@@ -54,11 +55,8 @@ const TopNav: React.FC<TopNavProps> = ({ setSidebarOpen }) => {
               <FaCog className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
             </button>
 
-            {/* Notification Icon */}
-            <button className="relative p-2 text-theme-text/70 hover:text-theme-icon hover:bg-theme-surface/50 rounded-full transition-all duration-200">
-              <FaBell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-2 block h-2 w-2 rounded-full ring-2 ring-theme-surface bg-red-500 animate-pulse"></span>
-            </button>
+            {/* Notification Dropdown */}
+            <NotificationDropdown />
         </div>
 
         {/* User Profile Separator */}
@@ -69,9 +67,14 @@ const TopNav: React.FC<TopNavProps> = ({ setSidebarOpen }) => {
             options={["Profile", "Settings", "Logout"]}
             onSelect={(value) => {
                 if (value === "Settings") navigate(SETTING);
+                if (value === "Profile") navigate('/profile');
                 console.log("Selected:", value);
             }}
-            selected={location.pathname === SETTING ? "Settings" : undefined}
+            selected={
+                location.pathname === SETTING ? "Settings" : 
+                location.pathname === '/profile' ? "Profile" : 
+                undefined
+            }
             width="w-48"
             trigger={
                 <div className="flex items-center space-x-3 cursor-pointer group p-1.5 pr-3 rounded-full hover:bg-theme-surface border border-transparent hover:border-theme-border/50 hover:shadow-sm transition-all duration-200">
