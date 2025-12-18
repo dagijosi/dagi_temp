@@ -3,19 +3,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Badge from '../components/ui/Badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/Table';
+import { Table,TableCell, TableHead, TableHeader, TableRow } from '../components/ui/Table';
 import { Button, Modal } from '../components/ui';
 import Input from '../components/ui/Input';
 import { FaEdit, FaTrash, FaPlus, FaFilter } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { usersData } from '../data/users';
 
-const usersData = [
-    { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active", lastLogin: "2 mins ago" },
-    { id: 2, name: "Bob Smith", email: "bob@example.com", role: "Editor", status: "Inactive", lastLogin: "3 days ago" },
-    { id: 3, name: "Charlie Brown", email: "charlie@example.com", role: "Viewer", status: "Active", lastLogin: "1 hour ago" },
-    { id: 4, name: "Diana Prince", email: "diana@example.com", role: "Admin", status: "Warning", lastLogin: "Yesterday" },
-    { id: 5, name: "Evan Wright", email: "evan@example.com", role: "Viewer", status: "Active", lastLogin: "Just now" },
-];
+
 
 const userSchema = z.object({
   firstName: z.string().min(2, "First name is required"),
@@ -60,15 +55,100 @@ const Users = () => {
                     <h1 className="text-2xl font-bold text-theme-text mb-1">User Management</h1>
                     <p className="text-sm text-theme-text/60">Manage system users, roles, and permissions.</p>
                 </div>
-                <div className="flex gap-3">
-                    <Button variant="outline" leftIcon={<FaFilter size={14} />}>Filter</Button>
-                    <Button onClick={() => setIsAddUserOpen(true)} leftIcon={<FaPlus size={14} />}>Add User</Button>
+                <div className="flex w-full sm:w-auto gap-3 flex-col sm:flex-row">
+                    <Button variant="outline" leftIcon={<FaFilter size={14} />} className="w-full sm:w-auto">Filter</Button>
+                    <Button onClick={() => setIsAddUserOpen(true)} leftIcon={<FaPlus size={14} />} className="w-full sm:w-auto">Add User</Button>
                 </div>
             </div>
 
             {/* Table Section */}
-            <div className="border border-theme-border rounded-2xl overflow-hidden shadow-sm bg-theme-surface/50 backdrop-blur-sm">
-                <Table>
+                <Table
+                    items={usersData}
+                    renderMobileItem={(user) => (
+                        <div className="flex items-start gap-3">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-theme-icon to-purple-500 p-[1px] shadow-sm">
+                                <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center text-sm font-bold text-theme-text">
+                                    {user.name.charAt(0)}
+                                </div>
+                            </div>
+                            <div className="flex-1">
+                                <div className="flex justify-between items-start gap-2">
+                                    <div>
+                                        <p className="font-medium text-theme-text">{user.name}</p>
+                                        <p className="text-xs text-theme-text/50">{user.email}</p>
+                                    </div>
+                                    <div className="flex-shrink-0 text-right">
+                                        <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-theme-border/20 text-theme-text">{user.role}</div>
+                                    </div>
+                                </div>
+                                <div className="mt-3 flex items-center justify-between gap-3">
+                                    <div className="flex items-center gap-2">
+                                        <Badge variant={
+                                            user.status === 'Active' ? 'success' : 
+                                            user.status === 'Inactive' ? 'default' : 
+                                            'warning'
+                                        }>
+                                            {user.status}
+                                        </Badge>
+                                        <span className="text-sm text-theme-text/60 font-mono">{user.lastLogin}</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button className="p-2 text-theme-text/50 hover:text-theme-icon hover:bg-theme-icon/10 rounded-lg transition-all" title="Edit">
+                                            <FaEdit size={14} />
+                                        </button>
+                                        <button className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Delete">
+                                            <FaTrash size={14} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    renderRow={(user) => (
+                        <TableRow key={user.id} className="hover:bg-theme-surface-active/30 transition-colors">
+                            <TableCell className="py-4 pl-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-theme-icon to-purple-500 p-[1px] shadow-sm">
+                                        <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center text-sm font-bold text-theme-text">
+                                            {user.name.charAt(0)}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="font-medium text-theme-text">{user.name}</p>
+                                        <p className="text-xs text-theme-text/50">{user.email}</p>
+                                    </div>
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-theme-border/20 text-theme-text">
+                                    {user.role}
+                                </span>
+                            </TableCell>
+                            <TableCell>
+                                <Badge variant={
+                                    user.status === 'Active' ? 'success' : 
+                                    user.status === 'Inactive' ? 'default' : 
+                                    'warning'
+                                }>
+                                    {user.status}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                <span className="text-sm text-theme-text/60 font-mono">{user.lastLogin}</span>
+                            </TableCell>
+                            <TableCell className="text-right pr-6">
+                                <div className="flex justify-end gap-2">
+                                    <button className="p-2 text-theme-text/50 hover:text-theme-icon hover:bg-theme-icon/10 rounded-lg transition-all" title="Edit">
+                                        <FaEdit size={14} />
+                                    </button>
+                                    <button className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Delete">
+                                        <FaTrash size={14} />
+                                    </button>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    )}
+                >
                     <TableHeader className="bg-theme-surface-active/50">
                         <TableRow>
                             <TableHead className="py-4 pl-6">User</TableHead>
@@ -78,54 +158,7 @@ const Users = () => {
                             <TableHead className="text-right pr-6">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
-                    <TableBody>
-                        {usersData.map((user) => (
-                            <TableRow key={user.id} className="hover:bg-theme-surface-active/30 transition-colors">
-                                <TableCell className="py-4 pl-6">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-theme-icon to-purple-500 p-[1px] shadow-sm">
-                                            <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center text-sm font-bold text-theme-text">
-                                                {user.name.charAt(0)}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p className="font-medium text-theme-text">{user.name}</p>
-                                            <p className="text-xs text-theme-text/50">{user.email}</p>
-                                        </div>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-theme-border/20 text-theme-text">
-                                        {user.role}
-                                    </span>
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant={
-                                        user.status === 'Active' ? 'success' : 
-                                        user.status === 'Inactive' ? 'default' : 
-                                        'warning'
-                                    }>
-                                        {user.status}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>
-                                    <span className="text-sm text-theme-text/60 font-mono">{user.lastLogin}</span>
-                                </TableCell>
-                                <TableCell className="text-right pr-6">
-                                    <div className="flex justify-end gap-2">
-                                        <button className="p-2 text-theme-text/50 hover:text-theme-icon hover:bg-theme-icon/10 rounded-lg transition-all" title="Edit">
-                                            <FaEdit size={14} />
-                                        </button>
-                                        <button className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Delete">
-                                            <FaTrash size={14} />
-                                        </button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
                 </Table>
-            </div>
 
             {/* Add User Modal */}
             <Modal
