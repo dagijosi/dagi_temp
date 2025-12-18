@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { type Theme, themes, defaultTheme, defaultDarkTheme } from './themes';
+import React, { createContext, useEffect, useState } from 'react';
+import type { Theme } from './types';
+import { themes, defaultTheme, defaultDarkTheme } from './themes';
 
 interface ThemeContextType {
   currentTheme: Theme;
@@ -54,6 +55,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const accentColor = currentTheme.colors.accent || currentTheme.colors.icon;
     root.style.setProperty('--color-accent', accentColor);
 
+    // Dropdown color: fallback to surface color if not defined
+    const dropdownColor = currentTheme.colors.dropdown || currentTheme.colors.surface;
+    root.style.setProperty('--color-dropdown', dropdownColor);
+
     // Handle Background Logic
     let bgSize = 'cover';
     if (currentTheme.backgroundSize) {
@@ -92,10 +97,5 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 };
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
+// Export the context for use in useTheme hook
+export { ThemeContext };

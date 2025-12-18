@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Card from '../components/ui/Card';
-import Input from '../components/ui/Input';
-import { Button } from '../components/ui';
+import { Card, Input, Button } from '../components/ui';
 import { toast } from 'sonner';
 
 const profileSchema = z.object({

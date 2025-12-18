@@ -11,71 +11,29 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import {
-  FaUsers,
   FaShoppingCart,
-  FaDollarSign,
-  FaRocket,
   FaChartBar,
   FaArrowUp,
   FaClock,
 } from "react-icons/fa";
+import { chartData, yearlyChartData, allTimeChartData, summaryData } from "../data";
 
-// Dummy data for the Recharts Bar Chart
-const chartData = [
-  { name: "Jan", Sales: 4000, Revenue: 2400 },
-  { name: "Feb", Sales: 3000, Revenue: 1398 },
-  { name: "Mar", Sales: 2000, Revenue: 9800 },
-  { name: "Apr", Sales: 2780, Revenue: 3908 },
-  { name: "May", Sales: 1890, Revenue: 4800 },
-  { name: "June", Sales: 2390, Revenue: 3800 },
-];
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
+  label?: string;
+}
 
-// Data for the summary cards
-const summaryData = [
-  {
-    title: "Total Sales",
-    value: "$12,450",
-    change: "+15.3%",
-    isPositive: true,
-    icon: FaDollarSign,
-    color: "from-green-500 to-emerald-600",
-    shadow: "shadow-emerald-500/20",
-  },
-  {
-    title: "New Users",
-    value: "258",
-    change: "+8.2%",
-    isPositive: true,
-    icon: FaUsers,
-    color: "from-blue-500 to-indigo-600",
-    shadow: "shadow-blue-500/20",
-  },
-  {
-    title: "Orders Placed",
-    value: "1,540",
-    change: "-2.5%",
-    isPositive: false,
-    icon: FaShoppingCart,
-    color: "from-orange-400 to-red-500",
-    shadow: "shadow-orange-500/20",
-  },
-  {
-    title: "Growth Rate",
-    value: "12.5%",
-    change: "+4.1%",
-    isPositive: true,
-    icon: FaRocket,
-    color: "from-purple-500 to-pink-600",
-    shadow: "shadow-purple-500/20",
-  },
-];
-
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-theme-surface/90 backdrop-blur-md border border-theme-border/50 p-3 rounded-lg shadow-xl text-sm">
         <p className="font-semibold text-theme-text mb-2">{label}</p>
-        {payload.map((entry: any, index: number) => (
+        {payload.map((entry, index: number) => (
           <div key={index} className="flex items-center space-x-2 mb-1 last:mb-0">
             <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></span>
             <span className="text-theme-text/80">{entry.name}:</span>
@@ -90,10 +48,32 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-import CustomDropdown from "../components/ui/CustomDropdown";
+import { CustomDropdown } from "../components/ui";
 
 const DashboardHome: React.FC = () => {
   const [timeRange, setTimeRange] = useState("Last 6 Months");
+  const [isChartLoading, setIsChartLoading] = useState(false);
+
+  // Handle time range change with loading state
+  const handleTimeRangeChange = (newRange: string) => {
+    setIsChartLoading(true);
+    setTimeRange(newRange);
+    // Simulate loading delay for better UX
+    setTimeout(() => setIsChartLoading(false), 300);
+  };
+
+  // Filter chart data based on selected time range
+  const getFilteredChartData = () => {
+    switch (timeRange) {
+      case "Last Year":
+        return yearlyChartData;
+      case "All Time":
+        return allTimeChartData;
+      case "Last 6 Months":
+      default:
+        return chartData;
+    }
+  };
 
   return (
     <div className="container mx-auto p-6 md:p-8 space-y-8">
@@ -151,7 +131,7 @@ const DashboardHome: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Large Chart Area (Recharts Integration) */}
-        <div className="lg:col-span-2 bg-theme-surface/70 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-theme-border/30 flex flex-col min-h-[400px]">
+        <div className="lg:col-span-2 bg-theme-surface/70 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-theme-border/30 flex flex-col">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-theme-text flex items-center">
                 <FaChartBar className="mr-2 text-theme-icon" /> Monthly Analytics
@@ -159,14 +139,19 @@ const DashboardHome: React.FC = () => {
             <CustomDropdown 
                 options={["Last 6 Months", "Last Year", "All Time"]} 
                 selected={timeRange} 
-                onSelect={setTimeRange} 
+                onSelect={handleTimeRangeChange} 
             />
           </div>
 
-          <div className="relative flex-1 w-full">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="w-full h-96 min-h-96 relative">
+            {isChartLoading && (
+              <div className="absolute inset-0 bg-theme-surface/50 backdrop-blur-sm flex items-center justify-center z-10 rounded-lg">
+                <div className="text-theme-text/60 text-sm">Updating chart...</div>
+              </div>
+            )}
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart
-                data={chartData}
+                data={getFilteredChartData()}
                 margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                 barSize={20}
               >

@@ -1,23 +1,7 @@
-export interface Theme {
-  id: string;
-  name: string;
-  description?: string; // Brief description of the theme
-  type: 'solid' | 'gradient' | 'pattern';
-  mode: 'light' | 'dark';
-  colors: {
-    background: string;
-    text: string;
-    muted?: string; // Secondary/muted text color
-    icon: string;
-    accent?: string; // Primary accent color (defaults to icon if not set)
-    border: string;
-    surface: string; // for cards/panels
-  };
-  patternImage?: string; // URL for pattern image
-  backgroundSize?: string; // Optional background size property
-}
+import type { Theme } from './types';
+import { ensureDropdownColors } from './themeUtils';
 
-export const themes: Theme[] = [
+const baseThemes: Theme[] = [
   {
     id: 'cyan-breeze',
     name: 'Cyan Breeze',
@@ -31,6 +15,7 @@ export const themes: Theme[] = [
       icon: '#06b6d4',
       border: '#e2e8f0',
       surface: '#ffffff',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -46,6 +31,7 @@ export const themes: Theme[] = [
       icon: '#67e8f9',
       border: '#1e293b',
       surface: '#1e293b',
+      dropdown: '#1e293b', // Solid background for dropdowns
     },
   },
   {
@@ -59,6 +45,7 @@ export const themes: Theme[] = [
       icon: '#22d3ee',
       border: 'rgba(14,165,233,0.3)',
       surface: 'rgba(255, 255, 255, 0.6)',
+      dropdown: '#ffffff', // Solid white instead of transparent
     },
   },
   {
@@ -72,6 +59,7 @@ export const themes: Theme[] = [
       icon: '#00f7ff',
       border: '#00a3a3',
       surface: '#003d4d',
+      dropdown: '#003d4d', // Solid dark cyan for dropdowns
     },
   },
   {
@@ -85,6 +73,7 @@ export const themes: Theme[] = [
       icon: '#60a5fa',
       border: '#1e3a8a',
       surface: 'rgba(30, 64, 175, 0.2)',
+      dropdown: '#1e40af', // Solid blue for dropdowns
     },
   },
   {
@@ -98,6 +87,7 @@ export const themes: Theme[] = [
       icon: '#a3a3a3',
       border: '#262626',
       surface: '#171717',
+      dropdown: '#171717', // Solid dark for dropdowns
     },
   },
   {
@@ -114,6 +104,7 @@ export const themes: Theme[] = [
       accent: '#ffffff', // White accent for high contrast
       border: '#334155',
       surface: '#111111',
+      dropdown: '#111111', // Solid dark for dropdowns
     },
   },
   {
@@ -130,6 +121,7 @@ export const themes: Theme[] = [
       accent: '#d97706',
       border: '#fcd34d',
       surface: 'rgba(255, 255, 255, 0.9)',
+      dropdown: '#fef3c7', // Warm light background for dropdowns
     },
   },
   {
@@ -143,6 +135,7 @@ export const themes: Theme[] = [
       icon: '#d97706',
       border: '#f59e0b',
       surface: 'rgba(255, 255, 255, 0.6)',
+      dropdown: '#fef3c7', // Solid cream for dropdowns
     },
     patternImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")',
     backgroundSize: 'auto',
@@ -157,7 +150,8 @@ export const themes: Theme[] = [
         text: '#00ff41',
         icon: '#008F11',
         border: '#005500',
-        surface: 'rgba(0, 50, 0, 0.3)'
+        surface: 'rgba(0, 50, 0, 0.3)',
+        dropdown: '#001100', // Solid dark green for dropdowns
     },
     // Increased contrast: Bright Green lines #00bd30
     patternImage: `linear-gradient(#00bd30 1px, transparent 1px), linear-gradient(90deg, #00bd30 1px, transparent 1px)`,
@@ -174,6 +168,7 @@ export const themes: Theme[] = [
         icon: '#3b82f6',
         border: '#cbd5e1',
         surface: 'rgba(255, 255, 255, 0.9)',
+        dropdown: '#ffffff', // Solid white for dropdowns
     },
     patternImage: `linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)`,
     backgroundSize: '20px 20px'
@@ -189,6 +184,7 @@ export const themes: Theme[] = [
         icon: '#0ea5e9',
         border: '#bae6fd',
         surface: 'rgba(255, 255, 255, 0.8)',
+        dropdown: '#f0f9ff', // Solid light blue for dropdowns
     },
     patternImage: 'radial-gradient(#bae6fd 20%, transparent 20%)',
     backgroundSize: '20px 20px'
@@ -204,6 +200,7 @@ export const themes: Theme[] = [
       icon: '#737373',
       border: '#404040',
       surface: '#262626',
+      dropdown: '#262626', // Solid dark gray for dropdowns
     },
     // High contrast woven pattern
     patternImage: 'repeating-linear-gradient(45deg, #171717 0, #171717 10px, #2e2e2e 10px, #2e2e2e 20px)',
@@ -220,6 +217,7 @@ export const themes: Theme[] = [
       icon: '#a855f7',
       border: '#e9d5ff',
       surface: 'rgba(255, 255, 255, 0.8)',
+      dropdown: '#faf5ff', // Solid lavender for dropdowns
     },
     patternImage: 'radial-gradient(#d8b4fe 20%, transparent 20%)',
     backgroundSize: '16px 16px',
@@ -236,6 +234,7 @@ export const themes: Theme[] = [
       icon: '#a78bfa', // violet-400
       border: '#39235bff', // violet-900
       surface: 'rgba(15, 23, 42, 0.6)', // Darker, higher contrast surface
+      dropdown: '#172554', // Solid blue for dropdowns
     },
   },
   {
@@ -249,6 +248,7 @@ export const themes: Theme[] = [
         icon: '#9ca3af',
         border: '#374151',
         surface: '#1f2937',
+        dropdown: '#1f2937', // Solid dark gray for dropdowns
     },
     // Increased contrast: Stripe color #374151 against dark background
     patternImage: 'repeating-linear-gradient(45deg, #374151 0, #374151 2px, transparent 2px, transparent 10px)',
@@ -264,6 +264,7 @@ export const themes: Theme[] = [
       icon: '#3b82f6',
       border: '#dbe7f7ff',
       surface: '#ffffff',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -277,6 +278,7 @@ export const themes: Theme[] = [
       icon: '#3b82f6', // blue-500
       border: '#1e293b', // blue-700
       surface: '#1e293b', // slate-800
+      dropdown: '#1e293b', // Solid dark blue for dropdowns
     },
   },
   {
@@ -290,6 +292,7 @@ export const themes: Theme[] = [
       icon: '#fbbf24', // amber-400
       border: 'rgba(255, 255, 255, 0.2)',
       surface: 'rgba(0, 0, 0, 0.2)',
+      dropdown: '#4c1d95', // Solid violet for dropdowns
     },
   },
   {
@@ -303,6 +306,7 @@ export const themes: Theme[] = [
       icon: '#34d399', // emerald-400
       border: '#065f46', // emerald-800
       surface: '#064e3b', // emerald-900
+      dropdown: '#064e3b', // Solid emerald for dropdowns
     },
   },
   {
@@ -316,6 +320,7 @@ export const themes: Theme[] = [
       icon: '#e11d48', // rose-600
       border: '#fecdd3', // rose-200
       surface: '#ffffff',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -329,6 +334,7 @@ export const themes: Theme[] = [
       icon: '#f59e0b', // amber-500
       border: '#334155',
       surface: 'rgba(15, 23, 42, 0.8)',
+      dropdown: '#0f172a', // Solid slate for dropdowns
     },
     patternImage: `url("data:image/svg+xml,%3Csvg width='24' height='40' viewBox='0 0 24 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10s-10 4.477-10 10v20c0 5.523 4.477 10 10 10zM12 40c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10s-10 4.477-10 10v20c0 5.523 4.477 10 10 10z' fill='%231e293b' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")`,
     backgroundSize: 'auto',
@@ -344,6 +350,7 @@ export const themes: Theme[] = [
       icon: '#a1a1aa', // zinc-400
       border: '#3f3f46', // zinc-700
       surface: '#27272a', // zinc-800
+      dropdown: '#27272a', // Solid zinc for dropdowns
     },
   },
   {
@@ -357,6 +364,7 @@ export const themes: Theme[] = [
       icon: '#34d399', // emerald-400
       border: '#065f46', // emerald-800
       surface: 'rgba(2, 44, 34, 0.8)',
+      dropdown: '#022c22', // Solid emerald for dropdowns
     },
   },
   {
@@ -370,6 +378,7 @@ export const themes: Theme[] = [
       icon: '#818cf8', // indigo-400
       border: '#3730a3', // indigo-800
       surface: '#312e81',
+      dropdown: '#312e81', // Solid indigo for dropdowns
     },
   },
   {
@@ -383,6 +392,7 @@ export const themes: Theme[] = [
       icon: '#38bdf8', // sky-400
       border: '#334155', // slate-700
       surface: '#0f172a', // slate-900 (darker panels)
+      dropdown: '#0f172a', // Solid slate for dropdowns
     },
     patternImage: `linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)`,
     backgroundSize: '20px 20px',
@@ -398,6 +408,7 @@ export const themes: Theme[] = [
       icon: '#6366f1',          // indigo-500 accent
       border: '#e2e8f0',        // slate-200
       surface: 'rgba(255, 255, 255, 0.8)', // soft light panels
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -411,6 +422,7 @@ export const themes: Theme[] = [
       icon: '#7c3aed',           // violet-600 accent
       border: '#e2e8f0',         // light gray border
       surface: 'rgba(255, 255, 255, 0.85)', // light glass panel
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -424,6 +436,7 @@ export const themes: Theme[] = [
       icon: '#475569',           // slate-600 accent
       border: '#cbd5e1',         // slate-300 border
       surface: 'rgba(255, 255, 255, 0.85)',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -437,6 +450,7 @@ export const themes: Theme[] = [
       icon: '#14b8a6',           // teal-500 accent
       border: '#99f6e4',         // teal-200 border
       surface: 'rgba(255, 255, 255, 0.85)',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -450,6 +464,7 @@ export const themes: Theme[] = [
       icon: '#ec4899',           // pink-500 accent
       border: '#fbcfe8',         // pink-200 border
       surface: 'rgba(255, 255, 255, 0.85)',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -463,6 +478,7 @@ export const themes: Theme[] = [
       icon: '#10b981',           // emerald-500 accent
       border: '#a7f3d0',         // emerald-200 border
       surface: 'rgba(255, 255, 255, 0.85)',
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
   },
   {
@@ -476,6 +492,7 @@ export const themes: Theme[] = [
       icon: '#60a5fa',          // blue-400 accent for highlights
       border: '#1e293b',        // slate-800 border
       surface: 'rgba(15, 23, 42, 0.7)', // translucent navy surface for nav/cards
+      dropdown: '#0d1a36', // Solid dark blue for dropdowns
     },
   },
   {
@@ -489,6 +506,7 @@ export const themes: Theme[] = [
       icon: '#60a5fa',            // blue accent for icons/highlights
       border: '#1e293b',          // dark border similar to slate-800
       surface: 'rgba(1, 1, 51, 0.7)', // translucent deep-blue surface for cards/panels
+      dropdown: '#010133', // Solid deep blue for dropdowns
     },
   },
   {
@@ -502,6 +520,7 @@ export const themes: Theme[] = [
       icon: '#6b7280',         // gray icons
       border: '#d1d5db',       // light gray border
       surface: 'rgba(250, 249, 246, 0.9)', // translucent surface for cards/panels
+      dropdown: '#faf9f6', // Solid paper color for dropdowns
     },
     patternImage: `
       radial-gradient(circle at 1px 1px, rgba(0,0,0,0.08) 1px, transparent 0),
@@ -521,6 +540,7 @@ export const themes: Theme[] = [
       icon: '#6b7280',                // gray icons
       border: '#d1d5db',              // light gray border
       surface: 'rgba(255, 255, 255, 0.9)', // translucent surface for cards/panels
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
     patternImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, #f3f4f6 2px, #f3f4f6 4px)',
     backgroundSize: undefined,
@@ -536,6 +556,7 @@ export const themes: Theme[] = [
       icon: '#6b7280',                // gray icons
       border: '#d1d5db',              // light gray border
       surface: 'rgba(250, 250, 250, 0.9)', // translucent surface for cards/panels
+      dropdown: '#fafafa', // Solid light gray for dropdowns
     },
     patternImage: `
       repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px),
@@ -554,6 +575,7 @@ export const themes: Theme[] = [
       icon: '#6b7280',                // gray icons
       border: '#d1d5db',              // light gray border
       surface: 'rgba(255, 255, 255, 0.9)', // translucent surface for cards/panels
+      dropdown: '#ffffff', // Solid white for dropdowns
     },
     patternImage: `
       repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
@@ -574,6 +596,7 @@ export const themes: Theme[] = [
       icon: '#ec4899',
       border: '#475569',
       surface: 'rgba(2, 6, 23, 0.8)',
+      dropdown: '#020617', // Solid dark for dropdowns
     },
     patternImage: `
       linear-gradient(to right, rgba(71,85,105,0.4) 1px, transparent 1px),
@@ -593,6 +616,7 @@ export const themes: Theme[] = [
       icon: '#10b981',
       border: '#374151',
       surface: 'rgba(15, 15, 15, 0.95)',
+      dropdown: '#0f0f0f', // Solid black for dropdowns
     },
     patternImage: `
       repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(16, 185, 129, 0.55) 2px, rgba(16, 185, 129, 0.55) 3px, transparent 3px, transparent 8px),
@@ -613,6 +637,7 @@ export const themes: Theme[] = [
       icon: '#f87171',
       border: '#111111',
       surface: 'rgba(0, 0, 0, 0.95)',
+      dropdown: '#000000', // Solid black for dropdowns
     },
     patternImage: 'repeating-linear-gradient(45deg, #000 0px, #2a2a2a 2px, #000 4px, #3a3a3a 6px)',
     backgroundSize: undefined,
@@ -628,6 +653,7 @@ export const themes: Theme[] = [
       icon: '#10b981',                        // green accent
       border: '#262626',                       // slightly lighter dark
       surface: 'rgba(23, 23, 23, 0.9)',       // translucent surface
+      dropdown: '#171717', // Solid dark gray for dropdowns
     },
     patternImage: `
       linear-gradient(90deg, #171717 1px, transparent 1px),
@@ -648,6 +674,7 @@ export const themes: Theme[] = [
       icon: '#22c55e',
       border: '#111111',
       surface: 'rgba(15, 15, 15, 0.95)',
+      dropdown: '#0f0f0f', // Solid black for dropdowns
     },
     patternImage: `
       repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(34, 197, 94, 0.4) 19px, rgba(34, 197, 94, 0.4) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.4) 39px, rgba(34, 197, 94, 0.4) 40px),
@@ -658,6 +685,9 @@ export const themes: Theme[] = [
     backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
   },
 ];
+
+// Ensure all themes have dropdown colors
+export const themes = ensureDropdownColors(baseThemes);
 
 export const defaultTheme = themes[0];
 export const defaultDarkTheme = themes[1];

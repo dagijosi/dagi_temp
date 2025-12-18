@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from './ThemeContext';
+import { useTheme } from './useTheme';
 import { FaPalette } from 'react-icons/fa';
 
 const ThemeSwitcher: React.FC = () => {

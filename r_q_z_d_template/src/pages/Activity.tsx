@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import Card from '../components/ui/Card';
-import Badge from '../components/ui/Badge';
-import { Button } from '../components/ui';
+import { Card, Badge, Button } from '../components/ui';
 import { FaFilter, FaDownload } from 'react-icons/fa';
-import { activities } from '../data/activities';
+import { activities } from '../data';
 
 const Activity = () => {
     const [filter, setFilter] = useState('All');

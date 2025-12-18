@@ -2,13 +2,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Badge from '../components/ui/Badge';
-import { Table,TableCell, TableHead, TableHeader, TableRow } from '../components/ui/Table';
-import { Button, Modal } from '../components/ui';
-import Input from '../components/ui/Input';
-import { FaEdit, FaTrash, FaPlus, FaFilter } from 'react-icons/fa';
+import { Badge, Table, TableCell, TableHead, TableHeader, TableRow, Button, Input, Modal, DeleteConfirmation, FilterDropdown, type FilterField } from '../components/ui';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { toast } from 'sonner';
-import { usersData } from '../data/users';
+import { usersData } from '../data';
 
 
 
@@ -24,6 +21,11 @@ type UserFormData = z.infer<typeof userSchema>;
 
 const Users = () => {
     const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    const [selectedUser, setSelectedUser] = useState<typeof usersData[0] | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [filters, setFilters] = useState<Record<string, string>>({});
     
     const { 
         register, 
@@ -47,6 +49,67 @@ const Users = () => {
         reset();
     };
 
+    const handleDeleteUser = (user: typeof usersData[0]) => {
+        setSelectedUser(user);
+        setIsDeleteOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        setIsDeleting(true);
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        toast.success(`User "${selectedUser?.name}" deleted successfully!`);
+        setIsDeleting(false);
+        setIsDeleteOpen(false);
+        setSelectedUser(null);
+    };
+
+    const filterFields: FilterField[] = [
+        {
+            name: 'name',
+            label: 'Name',
+            type: 'text',
+            placeholder: 'Search by name...'
+        },
+        {
+            name: 'email',
+            label: 'Email',
+            type: 'text',
+            placeholder: 'Search by email...'
+        },
+        {
+            name: 'role',
+            label: 'Role',
+            type: 'select',
+            options: [
+                { value: 'Admin', label: 'Admin' },
+                { value: 'Editor', label: 'Editor' },
+                { value: 'Viewer', label: 'Viewer' }
+            ]
+        },
+        {
+            name: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+                { value: 'Active', label: 'Active' },
+                { value: 'Inactive', label: 'Inactive' }
+            ]
+        }
+    ];
+
+    const handleApplyFilters = (newFilters: Record<string, string>) => {
+        setFilters(newFilters);
+        console.log('Applied filters:', newFilters);
+        toast.success('Filters applied successfully!');
+    };
+
+    const handleResetFilters = () => {
+        setFilters({});
+        console.log('Filters reset');
+        toast.info('Filters cleared');
+    };
+
     return (
         <div className="space-y-6">
             {/* Header & Actions */}
@@ -56,7 +119,13 @@ const Users = () => {
                     <p className="text-sm text-theme-text/60">Manage system users, roles, and permissions.</p>
                 </div>
                 <div className="flex w-full sm:w-auto gap-3 flex-col sm:flex-row">
-                    <Button variant="outline" leftIcon={<FaFilter size={14} />} className="w-full sm:w-auto">Filter</Button>
+                    <FilterDropdown
+                        fields={filterFields}
+                        onApply={handleApplyFilters}
+                        onReset={handleResetFilters}
+                        initialValues={filters}
+                        className="w-full sm:w-auto"
+                    />
                     <Button onClick={() => setIsAddUserOpen(true)} leftIcon={<FaPlus size={14} />} className="w-full sm:w-auto">Add User</Button>
                 </div>
             </div>
@@ -96,7 +165,11 @@ const Users = () => {
                                         <button className="p-2 text-theme-text/50 hover:text-theme-icon hover:bg-theme-icon/10 rounded-lg transition-all" title="Edit">
                                             <FaEdit size={14} />
                                         </button>
-                                        <button className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Delete">
+                                        <button 
+                                            className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" 
+                                            title="Delete"
+                                            onClick={() => handleDeleteUser(user)}
+                                        >
                                             <FaTrash size={14} />
                                         </button>
                                     </div>
@@ -141,7 +214,11 @@ const Users = () => {
                                     <button className="p-2 text-theme-text/50 hover:text-theme-icon hover:bg-theme-icon/10 rounded-lg transition-all" title="Edit">
                                         <FaEdit size={14} />
                                     </button>
-                                    <button className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" title="Delete">
+                                    <button 
+                                        className="p-2 text-theme-text/50 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all" 
+                                        title="Delete"
+                                        onClick={() => handleDeleteUser(user)}
+                                    >
                                         <FaTrash size={14} />
                                     </button>
                                 </div>
@@ -228,6 +305,19 @@ const Users = () => {
                     </div>
                 </form>
             </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmation
+                isOpen={isDeleteOpen}
+                onClose={() => setIsDeleteOpen(false)}
+                onConfirm={confirmDelete}
+                title="Delete User"
+                message="Are you sure you want to delete this user? This action cannot be undone and will remove all associated data."
+                itemName={selectedUser?.name}
+                isLoading={isDeleting}
+            />
+
+
         </div>
     );
 };

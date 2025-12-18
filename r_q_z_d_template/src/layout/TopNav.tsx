@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { FaBars, FaSearch, FaCog } from "react-icons/fa";
 import { SETTING } from "../routes/types/routeConstants";
 import { useNavigate, useLocation } from "react-router-dom";
-import CustomDropdown from "../components/ui/CustomDropdown";
-import NotificationDropdown from "../components/ui/NotificationDropdown";
+import { CustomDropdown, NotificationDropdown } from "../components/ui";
 
 interface TopNavProps {
   sidebarOpen: boolean;
