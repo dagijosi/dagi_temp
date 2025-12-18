@@ -231,7 +231,7 @@ export const Table = <T,>({
       {mobileView}
 
       {/* DESKTOP */}
-      <div className="hidden md:block overflow-x-auto rounded-xl border border-theme-border bg-theme-surface/30">
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-theme-border bg-theme-surface/60">
         <table className="w-full text-left text-sm text-theme-text">
           {children}
           <tbody className="divide-y divide-theme-border/50">
