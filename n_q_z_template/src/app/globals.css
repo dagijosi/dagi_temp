@@ -3,6 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Premium Toast Theme Variables */
+  --theme-icon: #3b82f6;
+  --theme-surface: #ffffff;
+  --theme-text: #171717;
+  --theme-border: #e5e7eb;
 }
 
 @theme inline {
@@ -10,12 +16,25 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Premium Toast Colors */
+  --color-theme-icon: var(--theme-icon);
+  --color-theme-surface: var(--theme-surface);
+  --color-theme-text: var(--theme-text);
+  --color-theme-border: var(--theme-border);
+  --color-theme-background: var(--background);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    /* Premium Toast Theme Variables (Dark) */
+    --theme-icon: #60a5fa;
+    --theme-surface: #1c1c1e;
+    --theme-text: #ededed;
+    --theme-border: #2c2c2e;
   }
 }
 
