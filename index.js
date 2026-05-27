@@ -28,6 +28,7 @@ async function main() {
       choices: [
         { title: "Landing Page", value: "r_q_z_template" },
         { title: "Dashboard", value: "r_q_z_d_template" },
+        { title: "Nextjs Landing Page", value: "n_q_z_template" },
       ],
     },
   ]);
@@ -44,7 +45,7 @@ async function main() {
     const pkgJson = await readFile(pkgJsonPath, "utf-8");
     // Replace "name" field regardless of which template it came from
     const newPkgJson = pkgJson.replace(
-      /"name"\s*:\s*"(r_q_z_template|r_q_z_d_template)"/,
+      /"name"\s*:\s*"(r_q_z_template|r_q_z_d_template|n_q_z_template)"/,
       `"name": "${response.projectName}"`
     );
     await writeFile(pkgJsonPath, newPkgJson, "utf-8");
@@ -59,7 +60,7 @@ async function main() {
     const indexHtml = await readFile(indexHtmlPath, "utf-8");
     // Replace <title>r_q_z_template</title> or <title>r_q_z_d_template</title>
     const newIndexHtml = indexHtml.replace(
-      /<title>(r_q_z_template|r_q_z_d_template)<\/title>/,
+      /<title>(r_q_z_template|r_q_z_d_template|n_q_z_template)<\/title>/,
       `<title>${response.projectName}</title>`
     );
     await writeFile(indexHtmlPath, newIndexHtml, "utf-8");
