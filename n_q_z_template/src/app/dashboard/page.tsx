@@ -2,10 +2,14 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
 import { premiumToast } from '@/components/ui/feedback/premiumToastUtil';
 import { motion } from 'framer-motion';
+import PremiumChart from '@/components/ui/charts/PremiumChart';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import PremiumForm from '@/components/ui/PremiumForm'; // Imported PremiumForm
 import { 
   FaBox, 
   FaSync, 
@@ -13,7 +17,8 @@ import {
   FaTrash, 
   FaCheckCircle, 
   FaExclamationTriangle,
-  FaArrowLeft
+  FaArrowLeft,
+
 } from 'react-icons/fa';
 import Link from 'next/link';
 
@@ -47,6 +52,7 @@ const fetchOrders = async (setProgress: (p: number) => void): Promise<Order[]> =
 };
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
   const { data: orders, isLoading, refetch, isFetching } = useQuery({
     queryKey: ['orders'],
     queryFn: () => premiumToast.promise(
@@ -73,18 +79,19 @@ export default function DashboardPage() {
                 <FaArrowLeft size={14} />
               </Link>
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Operation Dashboard</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t('dashboard')}</h1>
                 <p className="text-sm text-zinc-500 font-medium">Monitoring real-time order flow and system health.</p>
               </div>
             </div>
             
             <div className="flex gap-3">
+              <LanguageSwitcher />
               <button 
                 onClick={() => refetch()}
                 disabled={isFetching}
                 className="h-11 px-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-zinc-50 transition-all disabled:opacity-50"
               >
-                <FaSync className={isFetching ? 'animate-spin' : ''} /> {isFetching ? 'Syncing...' : 'Refresh Data'}
+                <FaSync className={isFetching ? 'animate-spin' : ''} /> {isFetching ? 'Syncing...' : t('refresh')}
               </button>
               
               <PermissionGate permissions={['product:create']}>
@@ -94,6 +101,28 @@ export default function DashboardPage() {
               </PermissionGate>
             </div>
           </header>
+
+          {/* Dashboard Overview Charts */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <PremiumChart 
+              title="Order Flow Trends"
+              type="area"
+              series={[{ name: 'Orders', data: [30, 40, 35, 50, 49, 60, 70] }]}
+              height={200}
+            />
+            <PremiumChart 
+              title="Revenue by Source"
+              type="bar"
+              series={[{ name: 'Revenue', data: [400, 430, 448, 470, 540] }]}
+              height={200}
+            />
+            <PremiumChart 
+              title="Traffic Distribution"
+              type="donut"
+              series={[44, 55, 13, 33]}
+              height={200}
+            />
+          </div>
 
           {/* Grid Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -188,6 +217,8 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </PermissionGate>
+              
+              <PremiumForm />
             </div>
 
           </div>

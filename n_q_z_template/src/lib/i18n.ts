@@ -6,6 +6,17 @@ i18n.use(initReactI18next).init({
     en: {
       translation: {
         welcome: 'Welcome',
+        dashboard: 'Dashboard',
+        settings: 'Settings',
+        refresh: 'Refresh',
+      },
+    },
+    es: {
+      translation: {
+        welcome: 'Bienvenido',
+        dashboard: 'Panel de control',
+        settings: 'Configuración',
+        refresh: 'Actualizar',
       },
     },
   },
