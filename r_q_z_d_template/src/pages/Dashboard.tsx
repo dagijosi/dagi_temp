@@ -48,7 +48,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   return null;
 };
 
-import { CustomDropdown } from "../components/ui";
+import { CustomDropdown, premiumToast } from "../components/ui";
 
 const DashboardHome: React.FC = () => {
   const [timeRange, setTimeRange] = useState("Last 6 Months");
@@ -75,6 +75,47 @@ const DashboardHome: React.FC = () => {
     }
   };
 
+  // Test toast functions
+  const testSuccessToast = () => {
+    premiumToast.success("Operation completed successfully!", {
+      description: "Your changes have been saved.",
+    });
+  };
+
+  const testErrorToast = () => {
+    premiumToast.error("Something went wrong!", {
+      description: "Please try again later.",
+    });
+  };
+
+  const testLoadingToast = () => {
+    premiumToast.promise(
+      (setProgress) => {
+        return new Promise<void>((resolve) => {
+          let progress = 0;
+          const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 20) + 5;
+            if (progress >= 100) {
+              clearInterval(interval);
+              resolve();
+            } else {
+              setProgress(progress);
+            }
+          }, 300);
+        });
+      },
+      {
+        loading: "Uploading file...",
+        success: "File uploaded!",
+        error: "Upload failed",
+      }
+    );
+  };
+
+  const testMessageToast = () => {
+    premiumToast.message("New message from John", "Hey, let's catch up later!", "https://i.pravatar.cc/150?img=12");
+  };
+
   return (
     <div className="container mx-auto p-6 md:p-8 space-y-8">
       {/* Header */}
@@ -87,9 +128,21 @@ const DashboardHome: React.FC = () => {
                 Welcome back, here's what's happening today.
             </p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex flex-wrap gap-3">
              <button className="px-4 py-2 bg-theme-surface border border-theme-border/50 text-theme-text text-sm font-medium rounded-lg shadow-sm hover:bg-theme-surface/80 hover:border-theme-border transition-all hover:-translate-y-0.5 backdrop-blur-md">
                 Download Report
+             </button>
+             <button onClick={testSuccessToast} className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-green-600 transition-all hover:-translate-y-0.5">
+                Success Toast
+             </button>
+             <button onClick={testErrorToast} className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-red-600 transition-all hover:-translate-y-0.5">
+                Error Toast
+             </button>
+             <button onClick={testLoadingToast} className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-blue-600 transition-all hover:-translate-y-0.5">
+                Loading Toast
+             </button>
+             <button onClick={testMessageToast} className="px-4 py-2 bg-purple-500 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-purple-600 transition-all hover:-translate-y-0.5">
+                Message Toast
              </button>
         </div>
       </div>
