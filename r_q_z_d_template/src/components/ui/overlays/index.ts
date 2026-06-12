@@ -4,4 +4,6 @@ export { default as FilterDropdown } from './FilterDropdown';
 export { default as NotificationDropdown } from './NotificationDropdown';
 export { default as CustomDropdown } from './CustomDropdown';
 export { default as BaseDropdown } from './BaseDropdown';
+export { MobileOverlay } from './MobileOverlay';
+export { SidebarTooltip } from './SidebarTooltip';
 export type { FilterField } from './FilterDropdown';

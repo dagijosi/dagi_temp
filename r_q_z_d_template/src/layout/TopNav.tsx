@@ -1,32 +1,61 @@
 import React, { useState } from "react";
 import { FaBars, FaSearch, FaCog } from "react-icons/fa";
-import { SETTING } from "../routes/types/routeConstants";
+import { SETTING, DASHBOARD, PROFILE, USERS, ACTIVITY } from "../routes/types/routeConstants";
 import { useNavigate, useLocation } from "react-router-dom";
-import { CustomDropdown, NotificationDropdown } from "../components/ui";
+import { CustomDropdown, NotificationDropdown, Breadcrumb } from "../components/ui";
+import type { BreadcrumbItem } from "../components/ui";
 
 interface TopNavProps {
   sidebarOpen: boolean;
   setSidebarOpen: (isOpen: boolean) => void;
 }
 
-const TopNav: React.FC<TopNavProps> = ({ setSidebarOpen }) => {
+const breadcrumbMap: Record<string, string> = {
+  [DASHBOARD]: "Dashboard",
+  [SETTING]: "Settings",
+  [PROFILE]: "Profile",
+  [USERS]: "Users",
+  [ACTIVITY]: "Activity",
+};
+
+const TopNav: React.FC<TopNavProps> = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
+  const getBreadcrumbs = (): BreadcrumbItem[] => {
+    const pathname = location.pathname;
+    const crumbs: BreadcrumbItem[] = [];
+    
+    // Always start with Dashboard
+    crumbs.push({ name: "Dashboard", path: DASHBOARD });
+
+    // If not on Dashboard, add current page
+    if (pathname !== DASHBOARD && breadcrumbMap[pathname]) {
+      crumbs.push({ name: breadcrumbMap[pathname], path: pathname });
+    }
+
+    return crumbs;
+  };
+
+  const breadcrumbs = getBreadcrumbs();
+
   return (
-    <div className="sticky top-0 z-30 flex items-center justify-between h-16 px-6 bg-theme-surface/70 backdrop-blur-md border-b border-theme-border/30 transition-all duration-300">
+    <div className="sticky top-0 z-30 flex items-center justify-between h-16 px-6 bg-transparent backdrop-blur-md border-b border-theme-border/10 transition-all duration-300">
       
-      {/* Left Side: Menu/Toggle Button & Title */}
+      {/* Left Side: Menu/Toggle Button & Breadcrumb */}
       <div className="flex items-center">
-        {/* Toggle button for mobile */}
+        {/* Toggle button for all screen sizes */}
         <button
-          className="text-theme-text/70 hover:text-theme-icon focus:outline-none lg:hidden mr-4 p-2 rounded-full hover:bg-theme-surface/50 transition-colors"
-          onClick={() => setSidebarOpen(true)} 
-          aria-label="Open sidebar"
+          className="text-theme-text/70 hover:text-theme-icon focus:outline-none mr-4 p-2 rounded-full hover:bg-theme-surface/50 transition-colors"
+          onClick={() => setSidebarOpen(!sidebarOpen)} 
+          aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
         >
           <FaBars className="w-5 h-5" />
         </button>
+
+        {/* Breadcrumb */}
+        <Breadcrumb items={breadcrumbs} />
       </div>
       
       {/* Right Side: Icons and Profile */}
@@ -77,14 +106,18 @@ const TopNav: React.FC<TopNavProps> = ({ setSidebarOpen }) => {
             width="w-48"
             trigger={
                 <div className="flex items-center space-x-3 cursor-pointer group p-1.5 pr-3 rounded-full hover:bg-theme-surface border border-transparent hover:border-theme-border/50 hover:shadow-sm transition-all duration-200">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
-                    <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center overflow-hidden">
-                        <img 
-                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
-                            alt="User" 
-                            className="w-full h-full object-cover"
-                        />
+                  <div className="relative">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
+                      <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center overflow-hidden">
+                          <img 
+                              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
+                              alt="User" 
+                              className="w-full h-full object-cover"
+                          />
+                      </div>
                     </div>
+                    {/* Online indicator */}
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-theme-background"></div>
                   </div>
                   <div className="hidden sm:flex flex-col items-start leading-tight">
                      <span className="text-sm font-semibold text-theme-text group-hover:text-theme-icon transition-colors">

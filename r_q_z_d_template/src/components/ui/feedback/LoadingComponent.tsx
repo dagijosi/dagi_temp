@@ -1,4 +1,6 @@
+import React from "react";
 import { motion, type Variants } from "framer-motion";
+import { useTheme } from "../../../theme-system/useTheme";
 
 interface LoadingComponentProps {
   text?: string;
@@ -11,34 +13,48 @@ const LoadingComponent: React.FC<LoadingComponentProps> = ({
   dotCount = 3,
   className = "",
 }) => {
+  const { currentTheme } = useTheme();
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.3 } },
-    exit: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.1 } }, // Faster fade-in
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   const dotVariants: Variants = {
     bouncing: (i: number) => ({
-      y: [0, -15, 0],
-      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+      y: [0, -10, 0],
       transition: {
-        delay: i * 0.2, // stagger vertical motion
-        duration: 1.2,
-        ease: [0.42, 0, 0.58, 1],
+        delay: i * 0.15,
+        duration: 1.0,
+        ease: "easeInOut",
         repeat: Infinity,
-        repeatType: "loop",
       },
     }),
   };
 
   const textVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut", delay: 0.1 } },
+  };
+
+  // Inline styles for theme colors
+  const backdropStyle = {
+    backgroundColor: currentTheme.colors.surface ? `${currentTheme.colors.surface}bf` : 'rgba(240, 240, 240, 0.75)', // surface color with ~75% opacity
+  };
+
+  const dotStyle = {
+    backgroundColor: currentTheme.colors.icon || '#007BFF', // Fallback to a default blue
+  };
+
+  const textStyle = {
+    color: currentTheme.colors.text || '#333333', // Fallback to a default dark gray
   };
 
   return (
     <motion.div
-      className={`flex fixed inset-0 z-50 flex-col justify-center items-center backdrop-blur-md bg-slate-50/60 ${className}`}
+      className={`flex fixed inset-0 z-50 flex-col justify-center items-center backdrop-blur-sm ${className}`}
+      style={backdropStyle}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -46,25 +62,25 @@ const LoadingComponent: React.FC<LoadingComponentProps> = ({
       role="status"
       aria-label={text}
     >
-      {/* Bouncing gradient dots */}
-      <div className="flex justify-center items-center space-x-3">
+      {/* Bouncing dots with theme color */}
+      <div className="flex justify-center items-center space-x-2">
         {Array.from({ length: dotCount }).map((_, i) => (
           <motion.span
             key={i}
-            className="w-5 h-5 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 bg-size-[200%_200%] bg-no-repeat"
+            className="w-4 h-4 rounded-full"
+            style={dotStyle}
             variants={dotVariants}
             animate="bouncing"
-            custom={i} // custom index for stagger
+            custom={i}
           />
         ))}
       </div>
 
-      {/* Animated text */}
+      {/* Animated text with theme color */}
       <motion.p
-        className="mt-6 text-xl font-semibold text-gray-700 text-center max-w-xs"
+        className="mt-5 text-lg font-medium text-center max-w-xs"
+        style={textStyle}
         variants={textVariants}
-        initial="hidden"
-        animate="visible"
       >
         {text}
       </motion.p>

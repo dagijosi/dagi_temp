@@ -7,3 +7,4 @@ export * from './forms';
 export * from './data-display';
 export * from './layout';
 export * from './overlays';
+export * from './Logo';

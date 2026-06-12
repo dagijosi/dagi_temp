@@ -56,7 +56,7 @@ premiumToast.promise = async <T,>(
   options: Omit<PremiumToastOptions, 'id'> = {}
 ) => {
   const id = Math.random().toString(36).substring(2, 9);
-  let interval: NodeJS.Timeout | null = null;
+  let interval: ReturnType<typeof setInterval> | null = null;
   
   const setProgress = (progress: number) => {
     premiumToast.loading(msgs.loading, progress, { ...options, id });
