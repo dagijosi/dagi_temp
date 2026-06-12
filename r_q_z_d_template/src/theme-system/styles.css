@@ -42,6 +42,26 @@ body {
     min-height: 100vh;
 }
 
+/* Thin scrollbar for sidebar */
+.sidebar-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-icon);
+    opacity: 0.2;
+    border-radius: 10px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-icon);
+    opacity: 0.5;
+}
+
 /* Optional: Custom scrollbar using theme vars */
 ::-webkit-scrollbar {
     width: 12px;

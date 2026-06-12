@@ -1,9 +1,20 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaCog, FaUser, FaChevronRight } from "react-icons/fa";
 import { useAuthStore } from "../../../store/authStore";
-import { SidebarTooltip } from "../overlays/SidebarTooltip";
+import {  SidebarFooterFlyout } from "../overlays";
+import { LOGIN, SETTING } from "../../../routes/types/routeConstants";
+
+interface MenuItem {
+  id: string;
+  icon: React.ElementType;
+  label: string;
+  href?: string;
+  onClick: () => void;
+  color?: string;
+  hoverColor?: string;
+}
 
 interface SidebarFooterProps {
   isOpen: boolean;
@@ -17,148 +28,204 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({
   onLinkClick,
 }) => {
   const navigate = useNavigate();
-  const { logout: clearLocalSession } = useAuthStore();
-  const [isHoveredSub, setIsHoveredSub] = useState(false);
-  const [isHoveredSignOut, setIsHoveredSignOut] = useState(false);
+  const location = useLocation();
+  const { logout: clearLocalSession, user } = useAuthStore();
+  const [isHoveredUser, setIsHoveredUser] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  // Mock organization data
-  const currentOrg = {
-    subscription: {
-      plan: {
-        code: "pro",
-        name: "Pro Plan"
+  // Handle click outside to close menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
       }
+    };
+
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu]);
+
+  const handleSignOut = () => {
+    clearLocalSession();
+    navigate(LOGIN);
+  };
+
+  const handleSettings = () => {
+    navigate(SETTING);
+    setShowMenu(false);
+    if (isMobile && onLinkClick) {
+      onLinkClick();
     }
   };
 
-  const handleSignOut = () => {
-    // Immediate local cleanup and redirect
-    clearLocalSession();
-    navigate("/");
+  const handleProfile = () => {
+    navigate("/profile");
+    setShowMenu(false);
+    if (isMobile && onLinkClick) {
+      onLinkClick();
+    }
   };
 
-  return (
-    <div
-      className={`border-t border-theme-border/50 ${isOpen ? "p-3 sm:p-4" : "p-2"} relative space-y-3`}
-    >
-      {/* Subscription Status - Open State (Compact Card) */}
-      <AnimatePresence mode="wait">
-        {isOpen ? (
-          <motion.div
-            key="open-sub"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            onClick={() => {
-              // navigate("/organization?tab=subscription");
-              if (isMobile && onLinkClick) {
-                onLinkClick();
-              }
-            }}
-            className="group/sub cursor-pointer relative overflow-hidden bg-linear-to-br from-theme-icon to-theme-icon/90 rounded-2xl py-3 px-4 shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10"
-          >
-            {/* Glossy overlay effect */}
-            <div className="absolute inset-0 bg-linear-to-tr from-white/10 to-transparent pointer-events-none" />
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
 
-            <div className="relative z-10 flex items-center justify-between gap-3">
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white/80 mb-0.5 leading-none">
-                  Current Plan
-                </span>
-                <span className="text-sm font-extrabold text-white truncate leading-tight">
-                  {currentOrg.subscription.plan.name}
-                </span>
-              </div>
-              <div className="bg-white/20 backdrop-blur-md rounded-xl px-2.5 py-1 border border-white/30 hover:bg-white/40 transition-all duration-200 shadow-sm active:scale-95">
-                <span className="text-[10px] font-black text-white uppercase tracking-tighter">
-                  Upgrade
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          /* Subscription Status - Closed State (Micro-indicator) */
-          <motion.div
-            key="closed-sub"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onMouseEnter={() => setIsHoveredSub(true)}
-            onMouseLeave={() => setIsHoveredSub(false)}
-            onClick={() => {
-              // navigate("/organization?tab=subscription");
-              if (isMobile && onLinkClick) {
-                onLinkClick();
-              }
-            }}
-            className="flex flex-col items-center justify-center py-1 group/sub cursor-pointer relative"
-          >
-            <div className="relative">
-              <div
-                className={`w-2.5 h-2.5 rounded-full ${currentOrg?.subscription?.plan.code === "free" ? "bg-amber-400" : "bg-theme-icon"} shadow-sm`}
-              />
-              <div
-                className={`absolute inset-0 w-full h-full rounded-full animate-ping opacity-40 ${currentOrg?.subscription?.plan.code === "free" ? "bg-amber-400" : "bg-theme-icon"}`}
-              />
-            </div>
-            {/* Tooltip for collapsed state */}
-            {!isMobile && (
-              <SidebarTooltip 
-                content={currentOrg?.subscription?.plan.name || "Free"} 
-                show={isHoveredSub}
-              >
-                <div className="absolute inset-0" />
-              </SidebarTooltip>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+  const menuItems: MenuItem[] = [
+    {
+      id: "settings",
+      icon: FaCog,
+      label: "Settings",
+      href: SETTING,
+      onClick: handleSettings,
+    },
+    {
+      id: "profile",
+      icon: FaUser,
+      label: "Profile",
+      href: "/profile",
+      onClick: handleProfile,
+    },
+    {
+      id: "signout",
+      icon: FaSignOutAlt,
+      label: "Sign Out",
+      onClick: handleSignOut,
+      color: "text-theme-text/70",
+      hoverColor: "hover:bg-red-500/10 hover:text-red-500",
+    },
+  ];
 
-      {/* Sign Out Button */}
-      <motion.button
-        className="w-full flex items-center h-10 sm:h-11 px-2.5 rounded-xl transition-all duration-200 group text-theme-text/70 hover:bg-red-500/10 hover:text-red-500 relative touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
-        animate={{
-          x: isOpen ? 0 : "0%",
-          justifyContent: isOpen ? "flex-start" : "center",
-        }}
-        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-        onMouseEnter={() => setIsHoveredSignOut(true)}
-        onMouseLeave={() => setIsHoveredSignOut(false)}
-        onClick={handleSignOut}
-        aria-label="Sign out"
-      >
-        <div className="flex items-center justify-center min-w-5 shrink-0">
-          <FaSignOutAlt className="w-4 h-4" />
-        </div>
-
-        <AnimatePresence mode="wait">
-          {isOpen && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: isMobile ? 0.15 : 0.4,
-                ease: [0.4, 0, 0.2, 1],
-                delay: isMobile ? 0 : 0.1,
-              }}
-              className="font-semibold whitespace-nowrap ml-3 overflow-hidden text-base"
-            >
-              Sign Out
-            </motion.span>
+  const userAvatar = (
+    <div className="relative shrink-0">
+      <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
+        <div className="w-full h-full rounded-xl bg-theme-surface flex items-center justify-center overflow-hidden">
+          {user?.avatar ? (
+            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+          ) : (
+            <img 
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
+              alt="User" 
+              className="w-full h-full object-cover"
+            />
           )}
-        </AnimatePresence>
+        </div>
+      </div>
+      {/* Online Status Dot */}
+      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-theme-surface rounded-full shadow-sm" />
+    </div>
+  );
 
-        {/* Tooltip for Collapsed State */}
-        {!isOpen && !isMobile && (
-          <SidebarTooltip 
-            content="Sign Out" 
-            show={isHoveredSignOut}
+  return (
+    <div className={`mt-auto transition-all duration-300 ${isOpen ? "p-3" : "p-2"}`}>
+      {isOpen ? (
+        <div className="relative" ref={menuRef}>
+          {/* Menu Dropdown */}
+          <AnimatePresence>
+            {showMenu && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                className="absolute bottom-full left-0 w-full mb-3 p-1.5 bg-theme-surface border border-theme-border/50 rounded-2xl shadow-2xl z-20 space-y-1 backdrop-blur-xl bg-theme-surface/90"
+              >
+                {menuItems.map((item) => {
+                  const isActive = item.href && location.pathname === item.href;
+                  return (
+                    <button
+                      key={item.id}
+                      className={`w-full flex items-center h-10 px-3 rounded-xl transition-all duration-200 group ${
+                        isActive 
+                          ? "bg-theme-icon/10 text-theme-icon shadow-sm" 
+                          : item.color || "text-theme-text/70 hover:bg-theme-text/5 hover:text-theme-icon"
+                      } ${item.hoverColor || ""}`}
+                      onClick={item.onClick}
+                      aria-label={item.label}
+                    >
+                      <div className={`flex items-center justify-center min-w-5 shrink-0 transition-colors ${isActive ? 'text-theme-icon' : 'opacity-60 group-hover:opacity-100'}`}>
+                        <item.icon className="w-4 h-4" />
+                      </div>
+                      <span className="font-semibold whitespace-nowrap ml-3 text-sm tracking-tight">
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* User Card */}
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={toggleMenu}
+            className={`w-full flex items-center p-2 rounded-2xl transition-all duration-300 border group ${
+              showMenu 
+                ? "bg-theme-icon/5 border-theme-icon/20 ring-4 ring-theme-icon/5" 
+                : "bg-theme-text/[0.03] border-theme-border/20 hover:bg-theme-text/[0.06] hover:border-theme-border/50 hover:shadow-md"
+            }`}
           >
-            <div className="absolute inset-0" />
-          </SidebarTooltip>
-        )}
-      </motion.button>
+            {userAvatar}
+            
+            <div className="flex items-center justify-between flex-1 ml-3 min-w-0">
+              <div className="flex flex-col items-start min-w-0">
+                <span className="text-sm font-bold text-theme-text truncate w-full text-left tracking-tight">
+                  {user?.name}
+                </span>
+                <div className="mt-0.5">
+                  <span className="text-[9px] font-black text-theme-icon/70 uppercase tracking-[0.1em]">
+                    {user?.role}
+                  </span>
+                </div>
+              </div>
+              <FaChevronRight 
+                size={12} 
+                className={`text-theme-text/20 transition-all duration-300 transform group-hover:text-theme-icon/50 ${showMenu ? 'rotate-90 text-theme-icon/50' : ''}`} 
+              />
+            </div>
+          </motion.button>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center">
+          {!isMobile ? (
+            <SidebarFooterFlyout
+              user={user}
+              menuItems={menuItems}
+              show={isHoveredUser}
+              onMouseEnter={() => setIsHoveredUser(true)}
+              onMouseLeave={() => setIsHoveredUser(false)}
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 border ${
+                  isHoveredUser 
+                    ? "bg-theme-icon/10 border-theme-icon/30 shadow-lg shadow-theme-icon/10" 
+                    : "bg-theme-text/[0.03] border-theme-border/20 hover:border-theme-border/50"
+                }`}
+                aria-label="User Profile"
+              >
+                {userAvatar}
+              </motion.button>
+            </SidebarFooterFlyout>
+          ) : (
+            <button
+              onClick={handleProfile}
+              className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-theme-text/[0.03] border border-theme-border/20 text-theme-icon"
+              aria-label="User Profile"
+            >
+              {userAvatar}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

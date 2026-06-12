@@ -75,14 +75,6 @@ const TopNav: React.FC<TopNavProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2">
-            <button 
-              onClick={() => navigate(SETTING)}
-              className="p-2 text-theme-text/70 hover:text-theme-icon hover:bg-theme-surface/50 rounded-full transition-all duration-200 group relative"
-              aria-label="Settings"
-            >
-              <FaCog className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-            </button>
-
             {/* Notification Dropdown */}
             <NotificationDropdown />
         </div>
@@ -91,43 +83,21 @@ const TopNav: React.FC<TopNavProps> = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="h-8 w-px bg-theme-border/40 mx-2 hidden sm:block"></div>
 
         {/* User Profile */}
-        <CustomDropdown
-            options={["Profile", "Settings", "Logout"]}
-            onSelect={(value) => {
-                if (value === "Settings") navigate(SETTING);
-                if (value === "Profile") navigate('/profile');
-                console.log("Selected:", value);
-            }}
-            selected={
-                location.pathname === SETTING ? "Settings" : 
-                location.pathname === '/profile' ? "Profile" : 
-                undefined
-            }
-            width="w-48"
-            trigger={
-                <div className="flex items-center space-x-3 cursor-pointer group p-1.5 pr-3 rounded-full hover:bg-theme-surface border border-transparent hover:border-theme-border/50 hover:shadow-sm transition-all duration-200">
-                  <div className="relative">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
-                      <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center overflow-hidden">
-                          <img 
-                              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
-                              alt="User" 
-                              className="w-full h-full object-cover"
-                          />
-                      </div>
-                    </div>
-                    {/* Online indicator */}
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-theme-background"></div>
-                  </div>
-                  <div className="hidden sm:flex flex-col items-start leading-tight">
-                     <span className="text-sm font-semibold text-theme-text group-hover:text-theme-icon transition-colors">
-                        DAGI User
-                     </span>
-                     <span className="text-xs text-theme-text/50">Admin</span>
-                  </div>
+        <div className="flex items-center space-x-3 cursor-pointer group p-1.5 pr-3 rounded-full hover:bg-theme-surface border border-transparent hover:border-theme-border/50 hover:shadow-sm transition-all duration-200">
+            <div className="relative">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
+                <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center overflow-hidden">
+                    <img 
+                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
+                        alt="User" 
+                        className="w-full h-full object-cover"
+                    />
                 </div>
-            }
-        />
+            </div>
+            {/* Online indicator */}
+            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-theme-background"></div>
+            </div>
+        </div>
       </div>
     </div>
   );

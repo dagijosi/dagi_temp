@@ -2,24 +2,31 @@ import {
   FaChartLine,
   FaUsers,
   FaHistory,
-  FaUser,
-  FaInfoCircle,
+  FaShoppingCart,
+  FaUserFriends,
+  FaFileExport,
+  FaChartPie,
 } from "react-icons/fa";
 import {
   DASHBOARD,
-  SETTING,
-  PROFILE,
   USERS,
   ACTIVITY,
+  ORDERS,
+  ORDERS_PENDING,
+  CUSTOMERS,
+  ANALYTICS,
+  ANALYTICS_TRAFFIC,
+  EXPORTS,
 } from "../routes/types/routeConstants";
 
 export interface NavLink {
   name: string;
-  href: string;
-  icon: React.ElementType;
+  href?: string;
+  icon?: React.ElementType;
   permissions?: string[];
   roles?: string[];
   entitlement?: string;
+  children?: NavLink[];
 }
 
 export interface NavCategory {
@@ -37,16 +44,37 @@ export const navigationCategories: NavCategory[] = [
     ],
   },
   {
+    name: "Sales",
+    links: [
+      {
+        name: "Orders",
+        icon: FaShoppingCart,
+        children: [
+          { name: "All Orders", href: ORDERS, icon: FaShoppingCart },
+          { name: "Pending", href: ORDERS_PENDING, icon: FaHistory },
+        ],
+      },
+      { name: "Customers", href: CUSTOMERS, icon: FaUserFriends },
+    ],
+  },
+  {
     name: "Management",
     links: [
       { name: "Users", href: USERS, icon: FaUsers, permissions: ["users.view"] },
     ],
   },
   {
-    name: "Account",
+    name: "Reports",
     links: [
-      { name: "Profile", href: PROFILE, icon: FaUser },
-      { name: "Settings", href: SETTING, icon: FaInfoCircle },
+      {
+        name: "Analytics",
+        icon: FaChartPie,
+        children: [
+          { name: "Sales Report", href: ANALYTICS, icon: FaChartLine },
+          { name: "Traffic", href: ANALYTICS_TRAFFIC, icon: FaChartPie },
+        ],
+      },
+      { name: "Exports", href: EXPORTS, icon: FaFileExport },
     ],
   },
 ];

@@ -31,7 +31,7 @@ const SidebarCategory: React.FC<SidebarCategoryProps> = ({
             }}
             className="px-2 sm:px-3 py-1 overflow-hidden"
           >
-            <span className="text-xs font-semibold text-theme-text/40 uppercase tracking-wider">
+            <span className="text-[12px] font-semibold text-theme-text/40 uppercase tracking-wider">
               {name}
             </span>
           </motion.div>

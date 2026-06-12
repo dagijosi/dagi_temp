@@ -1,8 +1,15 @@
 export const HOME = "/";
 export const DASHBOARD = "/dashboard";
 export const CATCH_ALL = "*";
-export const LOGIN = "/login"
+export const LOGIN = "/login";
+export const SIGNUP = "/signup";
 export const SETTING = "/setting";
 export const PROFILE = "/profile";
 export const USERS = "/users";
 export const ACTIVITY = "/activity";
+export const ORDERS = "/orders";
+export const ORDERS_PENDING = "/orders/pending";
+export const CUSTOMERS = "/customers";
+export const ANALYTICS = "/analytics";
+export const ANALYTICS_TRAFFIC = "/analytics/traffic";
+export const EXPORTS = "/exports";

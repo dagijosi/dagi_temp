@@ -6,4 +6,6 @@ export { default as CustomDropdown } from './CustomDropdown';
 export { default as BaseDropdown } from './BaseDropdown';
 export { MobileOverlay } from './MobileOverlay';
 export { SidebarTooltip } from './SidebarTooltip';
+export { default as SidebarFlyout } from './SidebarFlyout';
+export { default as SidebarFooterFlyout } from './SidebarFooterFlyout';
 export type { FilterField } from './FilterDropdown';
