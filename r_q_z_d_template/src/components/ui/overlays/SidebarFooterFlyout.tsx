@@ -127,24 +127,19 @@ export const SidebarFooterFlyout: React.FC<SidebarFooterFlyoutProps> = ({
                     </div>
                   </div>
                   <div className="flex flex-col min-w-0 flex-1">
-                    <div className="flex items-center justify-between min-w-0">
-                      <span className="text-sm font-semibold text-theme-text truncate tracking-tight">
-                        {user?.name || "User"}
-                      </span>
-                      <span className="text-[10px] font-bold text-theme-icon uppercase tracking-[0.15em] opacity-80 ml-2">
-                        {user?.role || "Member"}
-                      </span>
-                    </div>
-                    <span className="text-xs text-theme-text/60 truncate mt-0.5">
-                      {user?.email || "user@company.com"}
+                    <span className="text-sm font-semibold text-theme-text tracking-tight whitespace-normal break-words leading-tight">
+                      {user?.name || "User"}
+                    </span>
+                    <span className="text-[10px] font-medium text-theme-icon/80 uppercase tracking-[0.15em] mt-1">
+                      {user?.role || "Member"}
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Menu Items */}
-              <div className="p-2 space-y-1">
-                {menuItems.map((item) => {
+              <div className="p-2 space-y-0.5">
+                {menuItems.slice(0, 2).map((item) => {
                   const isActive = item.href && location.pathname === item.href;
                   return (
                     <button
@@ -160,7 +155,31 @@ export const SidebarFooterFlyout: React.FC<SidebarFooterFlyoutProps> = ({
                           : item.color || "text-theme-text/70 hover:bg-theme-text/5 hover:text-theme-icon"
                       } ${item.hoverColor || ""}`}
                     >
-                      <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-2 transition-colors ${isActive ? 'bg-theme-icon/10' : 'group-hover:bg-theme-icon/5'}`}>
+                      <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-2 transition-colors ${isActive ? 'bg-theme-icon/10' : 'group-hover:bg-theme-icon/5'} ${isActive ? 'text-theme-icon' : (item.color ? 'opacity-100' : 'opacity-60 group-hover:opacity-100')}`}>
+                        <item.icon className={`w-4 h-4 ${isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`} />
+                      </div>
+                      {item.label}
+                    </button>
+                  );
+                })}
+                <div className="border-t border-theme-border/70 my-1" />
+                {menuItems.slice(2).map((item) => {
+                  const isActive = item.href && location.pathname === item.href;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        item.onClick();
+                        setIsFlyoutHovered(false);
+                        onMouseLeave();
+                      }}
+                      className={`w-full flex items-center h-10 px-3 rounded-xl text-sm transition-all duration-300 font-medium group ${
+                        isActive 
+                          ? "bg-theme-icon/10 text-theme-icon shadow-sm" 
+                          : item.color || "text-theme-text/70 hover:bg-theme-text/5 hover:text-theme-icon"
+                      } ${item.hoverColor || ""}`}
+                    >
+                      <div className={`flex items-center justify-center w-8 h-8 rounded-lg mr-2 transition-colors ${isActive ? 'bg-theme-icon/10' : 'group-hover:bg-theme-icon/5'} ${isActive ? 'text-theme-icon' : (item.color ? 'opacity-100' : 'opacity-60 group-hover:opacity-100')}`}>
                         <item.icon className={`w-4 h-4 ${isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`} />
                       </div>
                       {item.label}

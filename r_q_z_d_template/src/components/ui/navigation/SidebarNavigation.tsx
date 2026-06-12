@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { navigationCategories } from "../../../constants/navigation";
 import type { NavLink } from "../../../constants/navigation";
-import SidebarCategory from "./SidebarCategory";
+import { SidebarCategory } from "./SidebarCategory";
 import SidebarLink from "./SidebarLink";
 import { useAbility } from "../../../hooks/useAbility";
 import { useBusinessModules } from "../../../hooks/useBusinessModules";

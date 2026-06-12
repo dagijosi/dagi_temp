@@ -9,7 +9,7 @@ interface SidebarCategoryProps {
   children: React.ReactNode;
 }
 
-const SidebarCategory: React.FC<SidebarCategoryProps> = ({ 
+export const SidebarCategory: React.FC<SidebarCategoryProps> = ({ 
   name, 
   isOpen, 
   isMobile, 
@@ -46,4 +46,3 @@ const SidebarCategory: React.FC<SidebarCategoryProps> = ({
   );
 };
 
-export default SidebarCategory;

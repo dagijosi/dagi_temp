@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { FaBars, FaSearch, FaCog } from "react-icons/fa";
+import React from "react";
+import { FaBars } from "react-icons/fa";
 import { SETTING, DASHBOARD, PROFILE, USERS, ACTIVITY } from "../routes/types/routeConstants";
-import { useNavigate, useLocation } from "react-router-dom";
-import { CustomDropdown, NotificationDropdown, Breadcrumb } from "../components/ui";
+import { useLocation } from "react-router-dom";
+import { NotificationDropdown, Breadcrumb } from "../components/ui";
 import type { BreadcrumbItem } from "../components/ui";
 
 interface TopNavProps {
@@ -19,9 +19,7 @@ const breadcrumbMap: Record<string, string> = {
 };
 
 const TopNav: React.FC<TopNavProps> = ({ sidebarOpen, setSidebarOpen }) => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const getBreadcrumbs = (): BreadcrumbItem[] => {
     const pathname = location.pathname;
@@ -58,46 +56,9 @@ const TopNav: React.FC<TopNavProps> = ({ sidebarOpen, setSidebarOpen }) => {
         <Breadcrumb items={breadcrumbs} />
       </div>
       
-      {/* Right Side: Icons and Profile */}
-      <div className="flex items-center space-x-4">
-        
-        {/* Search Bar (Hidden on small screens) */}
-        <div className={`relative hidden md:block transition-all duration-300 ${isSearchFocused ? 'w-64' : 'w-48'}`}>
-            <input 
-                type="text" 
-                placeholder="Search..." 
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-                className="w-full pl-10 pr-4 py-2 text-sm text-theme-text bg-theme-surface/50 border border-theme-border/50 rounded-full focus:ring-2 focus:ring-theme-icon/50 focus:border-theme-icon transition-all duration-300 shadow-sm placeholder:text-theme-text/40"
-            />
-            <FaSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 transition-colors duration-300 ${isSearchFocused ? 'text-theme-icon' : 'text-theme-text/40'}`} />
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
-            {/* Notification Dropdown */}
-            <NotificationDropdown />
-        </div>
-
-        {/* User Profile Separator */}
-        <div className="h-8 w-px bg-theme-border/40 mx-2 hidden sm:block"></div>
-
-        {/* User Profile */}
-        <div className="flex items-center space-x-3 cursor-pointer group p-1.5 pr-3 rounded-full hover:bg-theme-surface border border-transparent hover:border-theme-border/50 hover:shadow-sm transition-all duration-200">
-            <div className="relative">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
-                <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center overflow-hidden">
-                    <img 
-                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
-                        alt="User" 
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-            </div>
-            {/* Online indicator */}
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-theme-background"></div>
-            </div>
-        </div>
+      {/* Right Side: Notifications */}
+      <div className="flex items-center">
+        <NotificationDropdown />
       </div>
     </div>
   );
