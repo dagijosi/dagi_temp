@@ -90,6 +90,7 @@ const Signup: React.FC = () => {
             type="password"
             placeholder="••••••••"
             leftIcon={<Lock size={18} />}
+            showPasswordToggle
             {...register('password')}
             error={errors.password?.message}
           />
@@ -98,6 +99,7 @@ const Signup: React.FC = () => {
             type="password"
             placeholder="••••••••"
             leftIcon={<Lock size={18} />}
+            showPasswordToggle
             {...register('confirmPassword')}
             error={errors.confirmPassword?.message}
           />

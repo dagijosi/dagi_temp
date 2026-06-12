@@ -83,6 +83,7 @@ const Login: React.FC = () => {
           type="password"
           placeholder="••••••••"
           leftIcon={<Lock size={18} />}
+          showPasswordToggle
           {...register('password')}
           error={errors.password?.message}
         />
