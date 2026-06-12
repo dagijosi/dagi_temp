@@ -19,6 +19,7 @@ interface SidebarFooterFlyoutProps {
     name?: string;
     role?: string;
     avatar?: string;
+    email?: string;
   } | null;
   menuItems: MenuItem[];
   children: React.ReactElement;
@@ -46,7 +47,7 @@ export const SidebarFooterFlyout: React.FC<SidebarFooterFlyoutProps> = ({
         if (triggerRef.current) {
           const rect = triggerRef.current.getBoundingClientRect();
           const viewportHeight = window.innerHeight;
-          const flyoutHeight = 220; // Estimated height
+          const flyoutHeight = 260; // Estimated height
           
           const hasSpaceAbove = rect.top > flyoutHeight;
 
@@ -112,8 +113,8 @@ export const SidebarFooterFlyout: React.FC<SidebarFooterFlyoutProps> = ({
                 <div className="absolute -right-4 -top-4 w-20 h-20 bg-theme-icon/10 rounded-full blur-2xl" />
                 
                 <div className="flex items-center gap-3 relative z-10">
-                  <div className="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
-                    <div className="w-full h-full rounded-xl bg-theme-surface flex items-center justify-center overflow-hidden">
+                  <div className="shrink-0 w-9 h-9 rounded-full bg-gradient-to-tr from-theme-icon to-purple-500 p-0.5">
+                    <div className="w-full h-full rounded-full bg-theme-surface flex items-center justify-center overflow-hidden">
                       {user?.avatar ? (
                         <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
@@ -125,12 +126,17 @@ export const SidebarFooterFlyout: React.FC<SidebarFooterFlyoutProps> = ({
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-bold text-theme-text truncate tracking-tight">
-                      {user?.name || "User"}
-                    </span>
-                    <span className="text-[10px] font-bold text-theme-icon uppercase tracking-[0.15em] mt-0.5 opacity-80">
-                      {user?.role || "Member"}
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <div className="flex items-center justify-between min-w-0">
+                      <span className="text-sm font-semibold text-theme-text truncate tracking-tight">
+                        {user?.name || "User"}
+                      </span>
+                      <span className="text-[10px] font-bold text-theme-icon uppercase tracking-[0.15em] opacity-80 ml-2">
+                        {user?.role || "Member"}
+                      </span>
+                    </div>
+                    <span className="text-xs text-theme-text/60 truncate mt-0.5">
+                      {user?.email || "user@company.com"}
                     </span>
                   </div>
                 </div>
